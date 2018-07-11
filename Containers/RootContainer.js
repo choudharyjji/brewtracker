@@ -22,24 +22,41 @@ export default class RootContainer extends Component {
       })     
     }
   }
-
+  
   render () {
     return (
       <View style={styles.container}>
 
-        <TouchableOpacity style={styles.button}
-          onPress={this.pressMe}>
+        <View style={styles.rowContainer}>
 
-          <Text style={styles.welcome}> 
-            Press me! 
-          </Text>
+          <View style={{flex:1, 
+            backgroundColor:'grey', 
+            alignItems:'center', 
+            justifyContent:'center'}}>
 
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.button}
+              onPress={this.pressMe}>
+              <Text style={styles.welcome}> 
+                Press me! 
+              </Text>
+            </TouchableOpacity>
+            <Text style={styles.welcome}>
+                {this.state.test}
+            </Text>
 
-        <Text style={styles.welcome}>
-            {this.state.test}
-        </Text>
+          </View>
+          <View style={{flex:1,backgroundColor:'orange'}}/>
+        </View>
 
+        <View style={styles.rowContainer}>
+          <View style={{flex:1,backgroundColor:'blue'}}/>
+          <View style={{flex:1,backgroundColor:'red'}}/>
+        </View>
+
+        <View style={styles.rowContainer}>
+          <View style={{flex:1,backgroundColor:'purple'}}/>
+          <View style={{flex:1,backgroundColor:'green'}}/>
+        </View>
       </View>
     )
   }

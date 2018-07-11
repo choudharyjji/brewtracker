@@ -17,11 +17,14 @@ export default StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 200,
     height: 50,
     backgroundColor: 'pink',
     borderRadius: 10,
     borderWidth: 1,
     borderColor: 'red'
+  },
+  rowContainer: {
+    flex:1, 
+    flexDirection:'row'
   }
 })
