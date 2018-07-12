@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import RootContainer from './Containers/RootContainer'
+import AppNavigator from './Navigation/AppNavigation'
 
 export default class App extends Component {
   render () {
     return (
-        <RootContainer />
+        <AppNavigator />
     )
   }
 }

@@ -8,55 +8,69 @@ import styles from './Styles/RootContainerStyles'
 export default class RootContainer extends Component {
   constructor(props) {
     super(props)
-    this.state = { test: "Testing" }
   }
 
-  pressMe = () => {
-    if (this.state.test == "Testing") {
-      this.setState({
-        test: "DONE"
-      })
-    } else {
-      this.setState({
-        test: "Testing"
-      })     
-    }
-  }
-  
   render () {
     return (
       <View style={styles.container}>
 
         <View style={styles.rowContainer}>
-
-          <View style={{flex:1, 
-            backgroundColor:'grey', 
-            alignItems:'center', 
-            justifyContent:'center'}}>
-
-            <TouchableOpacity style={styles.button}
-              onPress={this.pressMe}>
-              <Text style={styles.welcome}> 
-                Press me! 
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.listButton}
+              onPress={() => this.props.navigation.navigate('newscreen')}>
+              <Text style={styles.welcome}>
+                  New
               </Text>
             </TouchableOpacity>
-            <Text style={styles.welcome}>
-                {this.state.test}
-            </Text>
-
           </View>
-          <View style={{flex:1,backgroundColor:'orange'}}/>
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.listButton}
+              onPress={() => this.props.navigation.navigate('community')}>
+              <Text style={styles.welcome}>
+                  Community
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.rowContainer}>
-          <View style={{flex:1,backgroundColor:'blue'}}/>
-          <View style={{flex:1,backgroundColor:'red'}}/>
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.listButton}
+              onPress={() => this.props.navigation.navigate('existing')}>
+              <Text style={styles.welcome}>
+                  Existing
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.listButton}
+              onPress={() => this.props.navigation.navigate('favourites')}>
+              <Text style={styles.welcome}>
+                  Favourites
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.rowContainer}>
-          <View style={{flex:1,backgroundColor:'purple'}}/>
-          <View style={{flex:1,backgroundColor:'green'}}/>
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.listButton}
+              onPress={() => this.props.navigation.navigate('finished')}>
+              <Text style={styles.welcome}>
+                  Finished
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.rowView}>
+            <TouchableOpacity style={styles.listButton}
+              onPress={() => this.props.navigation.navigate('sample')}>
+              <Text style={styles.welcome}>
+                  Sample
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
+        
       </View>
     )
   }

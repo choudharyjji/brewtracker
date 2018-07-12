@@ -26,5 +26,11 @@ export default StyleSheet.create({
   rowContainer: {
     flex:1, 
     flexDirection:'row'
+  },
+  rowView: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
