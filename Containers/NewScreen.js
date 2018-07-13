@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { 
   View, 
   Text } from 'react-native'
+import BackButton from '../Components/BackButton';
+import styles from './Styles/ContainerStyles';
 
 export default class NewScreen extends Component {
   constructor(props) {
@@ -11,9 +13,10 @@ export default class NewScreen extends Component {
   render () {
     return (
       <View>
-        <Text>
+        <Text style={styles.title}>
           New Screen
-        </Text>      
+        </Text>   
+        <BackButton />             
       </View>
     )
   }
