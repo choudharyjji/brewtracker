@@ -4,6 +4,7 @@ import {
   View, 
   Text } from 'react-native'
 import styles from './Styles/RootContainerStyles'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class RootContainer extends Component {
   constructor(props) {
@@ -13,19 +14,23 @@ export default class RootContainer extends Component {
   render () {
     return (
       <View style={styles.container}>
-
+          <Text style={styles.title}> 
+            BrewTracker 
+          </Text> 
         <View style={styles.rowContainer}>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.listButton}
+            <TouchableOpacity style={styles.icon}
               onPress={() => this.props.navigation.navigate('newscreen')}>
+              <Icon name="pagelines" size={80} color="black" />
               <Text style={styles.welcome}>
                   New
               </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.listButton}
+            <TouchableOpacity style={styles.icon}
               onPress={() => this.props.navigation.navigate('community')}>
+              <Icon name="users" size={80} color="black" />
               <Text style={styles.welcome}>
                   Community
               </Text>
@@ -35,16 +40,18 @@ export default class RootContainer extends Component {
 
         <View style={styles.rowContainer}>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.listButton}
+            <TouchableOpacity style={styles.icon}
               onPress={() => this.props.navigation.navigate('existing')}>
+              <Icon name="hourglass-end" size={80} color="black" />
               <Text style={styles.welcome}>
                   Existing
               </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.listButton}
+            <TouchableOpacity style={styles.icon}
               onPress={() => this.props.navigation.navigate('favourites')}>
+              <Icon name="thumbs-o-up" size={80} color="black" />
               <Text style={styles.welcome}>
                   Favourites
               </Text>
@@ -54,16 +61,18 @@ export default class RootContainer extends Component {
 
         <View style={styles.rowContainer}>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.listButton}
+            <TouchableOpacity style={styles.icon}
               onPress={() => this.props.navigation.navigate('finished')}>
+              <Icon name="beer" size={80} color="black" />
               <Text style={styles.welcome}>
                   Finished
               </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.rowView}>
-            <TouchableOpacity style={styles.listButton}
+            <TouchableOpacity style={styles.icon}
               onPress={() => this.props.navigation.navigate('sample')}>
+              <Icon name="tint" size={80} color="black" />
               <Text style={styles.welcome}>
                   Sample
               </Text>

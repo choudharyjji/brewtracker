@@ -7,12 +7,18 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10
+    backgroundColor: 'white'
+    //padding: 10
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    color: 'purple'    
+    color: 'black'    
+  },
+  title: {
+    fontSize: 40,
+    textAlign: 'center',
+    color: 'black'
   },
   button: {
     justifyContent: 'center',
@@ -32,5 +38,9 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  icon: {
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
