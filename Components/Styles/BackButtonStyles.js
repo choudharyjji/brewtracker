@@ -9,7 +9,8 @@ export default StyleSheet.create({
     backgroundColor: 'pink',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'red'
+    borderColor: 'red',
+    width: 100,
   },
   welcome: {
     fontSize: 20,
