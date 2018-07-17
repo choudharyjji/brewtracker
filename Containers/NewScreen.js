@@ -3,12 +3,14 @@ import {
   View, 
   Text,
   TextInput,
-  Picker } from 'react-native'
+  Picker, 
+  ScrollView } from 'react-native'
 import BackButton from '../Components/BackButton';
 import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const items = [
   {  
@@ -186,7 +188,8 @@ export default class NewScreen extends Component {
       date: '2018-01-01',
       title: 'Batch name',
       group: 'beer',
-      textInputValue: '',
+      method: '',
+      beerType: '',
       selectedItems: []
      };
   }
@@ -218,55 +221,110 @@ export default class NewScreen extends Component {
         { key: index++, label: 'Kolsch'}, 
         { key: index++, label: 'Porter' },
     ];
+    const method = [
+      { key: index++, section: false, label: 'Extract' },
+      { key: index++, label: 'All grain' },
+      { key: index++, label: 'Kit/canned' }
+    ]
 
     return (
       <View style={styles.container}>
-        <View style={styles.titleblock}> 
-          <Text style={styles.title}>
-            New Screen
-          </Text>   
-        </View>
 
-        <View style={{alignItems:'center'}}>
-          <TextInput
-            style={{fontSize: 20,
-              padding: 15, 
-              color: 'black', 
-              width: 300,
-              textAlign: 'center'}}
-            onChangeText={(title) => {
-              this.setState({title})}}
-            value={this.state.title}
-          />
-        </View>
+        <View style={{flex: 2}}>
+          <View style={
+            {alignItems:'center',
+            paddingBottom: 40}}>
 
-        <View style={{alignItems:'center'}}>
+            <TextInput
+              underlineColorAndroid='transparent'
+              style={{fontSize: 28,
+                color: 'black',
+                textAlign: 'center'
+                }}
+              onChangeText={(title) => {
+                this.setState({title})}}
+              value={this.state.title}/>
+
+          </View>
+
+          <View style={{
+              alignItems:'center',
+              paddingBottom: 40
+            }}> 
+
+            <DatePicker
+              date={this.state.date}
+              placeholder="select date"
+              mode="date"
+              format="YYYY-MM-DD"
+              minDate="2018-01-01"
+              maxDate={this.state.date}
+              showIcon={false}
+              customStyles={{
+              dateInput: {
+                  borderWidth:0,
+              },
+              dateText:{
+                fontSize: 24,
+                color: 'grey',
+              }
+            }}
+            onDateChange={(date) => {
+              this.setState({date: date});}}/>
+          </View>  
+
+
+          <View style={{alignItems:'center'}}>
           <ModalSelector
-              data={beer}
-              initValue="Select brew type"
-              supportedOrientations={['landscape']}
-              accessible={true}
-              scrollViewAccessibilityLabel={'Scrollable options'}
-              cancelButtonAccessibilityLabel={'Cancel Button'}
-              onChange={(option)=>{ this.setState({textInputValue:option.label})}}>
-              <TextInput
-                  style={{fontSize: 20,
-                    padding: 15, 
-                    color: 'black', 
-                    width: 300,
-                  textAlign: 'center'}}
-                  editable={false}
-                  placeholder="Select brew type"
-                  value={this.state.textInputValue} />
-          </ModalSelector>
+                data={method}
+                initValue="Select method"
+                supportedOrientations={['landscape']}
+                accessible={true}
+                scrollViewAccessibilityLabel={'Scrollable options'}
+                cancelButtonAccessibilityLabel={'Cancel Button'}
+                onChange={(option)=>{ this.setState({method:option.label})}}>
+                <TextInput
+                    style={{fontSize: 20,
+                      padding: 15, 
+                      color: 'black', 
+                      width: 300,
+                    textAlign: 'center'}}
+                    editable={false}
+                    placeholder="Select method"
+                    value={this.state.method} />
+            </ModalSelector>
+            <ModalSelector
+                data={beer}
+                initValue="Select type"
+                supportedOrientations={['landscape']}
+                accessible={true}
+                scrollViewAccessibilityLabel={'Scrollable options'}
+                cancelButtonAccessibilityLabel={'Cancel Button'}
+                onChange={(option)=>{ this.setState({beerType:option.label})}}>
+                <TextInput
+                    style={{fontSize: 20,
+                      padding: 15, 
+                      color: 'black', 
+                      width: 300,
+                    textAlign: 'center'}}
+                    editable={false}
+                    placeholder="Select type"
+                    value={this.state.beerType} />
+            </ModalSelector>
+          </View>
         </View>
 
-     
+      <ScrollView style={{flex: 1}}>
         <MultiSelect
           hideTags
           items={items}
           uniqueKey="id"
           subKey='children'
+          styles = {{
+            container: {
+              paddingHorizontal: 10
+            }
+          }}
           ref={(component) => { this.multiSelect = component }}
           onSelectedItemsChange={this.onSelectedItemsChange}
           selectedItems={this.state.selectedItems}
@@ -287,26 +345,7 @@ export default class NewScreen extends Component {
           submitButtonColor="#CCC"
           submitButtonText="Submit"
         />
-
-
-        <View style={{alignItems:'center'}}>        
-          <DatePicker
-            style ={{width: 200}}
-            date={this.state.date}
-            placeholder="select date"
-            mode="date"
-            format="YYYY-MM-DD"
-            minDate="2018-01-01"
-            maxDate={this.state.date}
-            showIcon={true}
-            customStyles={{
-            dateInput: {
-                padding:5
-            },
-          }}
-          onDateChange={(date) => {
-            this.setState({date: date});}}/>
-        </View>     
+      </ScrollView>
 
 
         <View style={{alignItems:'center', paddingTop:50}}> 

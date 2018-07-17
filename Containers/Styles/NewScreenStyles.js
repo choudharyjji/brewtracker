@@ -6,15 +6,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    padding: 10
     //alignItems: 'center',
     //justifyContent: 'space-between'
-  },
-  titleblock: {
-    height: 50,
-  },
-  title: {
-    fontSize: 25,
-    textAlign: 'center',
-    color: 'black'    
   }
 })
