@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { 
   View, 
   Text,
-  TextInput,
-  Picker, 
+  TextInput, 
   ScrollView } from 'react-native'
 import BackButton from '../Components/BackButton';
 import styles from './Styles/NewScreenStyles';
@@ -11,175 +10,8 @@ import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import hops from '../Data/hops';
 
-const items = [
-  {  
-    name: "Australian",
-    id: 1,
-    children: [{
-        name: "Pride of Ringwood",
-        id: 101,
-      },{
-        name: "Melba",
-        id: 102,
-      },{
-        name: "Vic Secret",
-        id: 103,
-      },{
-        name: "Topaz",
-        id: 104,
-      },{
-        name: "Sylva",
-        id: 105,
-      },{
-        name: "Summer",
-        id: 106,
-      },{
-        name: "Helga",
-        id: 107,
-      },{
-        name: "Galaxy",
-        id: 108,
-      },{
-        name: "Ella",
-        id: 109,
-      },{
-        name: "Enigma",
-        id: 110,
-      }]
-  },
-  {
-    name: "American",
-    id: 2,
-    children: [{
-        name: "Cascade",
-        id: 201,
-      },{
-        name: "Willamette",
-        id: 202,
-      },{
-        name: "Warrior",
-        id: 203,
-      },{
-        name: "Simcoe",
-        id: 204,
-      },{
-        name: "Mosaic",
-        id: 205,
-      },{
-        name: "El Dorado",
-        id: 206,
-      },{
-        name: "Columbus",
-        id: 207,
-      },{
-        name: "Cluster",
-        id: 208,
-      },{
-        name: "Citra",
-        id: 209,
-      },{
-        name: "Chinook",
-        id: 210,
-      },{
-        name: "Centennial",
-        id: 211,
-      },{
-        name: "Amarillo",
-        id: 212,
-      },{
-        name: "Idaho",
-        id: 213,
-      }]
-  },
-  {
-    name: "European",
-    id: 3,
-    children: [{
-        name: "Hallertau",
-        id: 301,
-      },{
-        name: "Mandarina",
-        id: 302,
-      },{
-        name: "Tettnang",
-        id: 303,
-      },{
-        name: "Styrian Goldings",
-        id: 304,
-      },{
-        name: "Saaz",
-        id: 305,
-      },{
-        name: "Perle",
-        id: 306,
-      },{
-        name: "Northern Brewer",
-        id: 307,
-      },{
-        name: "Magnum",
-        id: 308,
-      },{
-        name: "Hersbrucker",
-        id: 309,
-      },{
-        name: "Hallertau Blanc",
-        id: 310,
-      }]
-  },
-  {
-    name: "British",
-    id: 4,
-    children: [{
-        name: "Challenger",
-        id: 401,
-      },{
-        name: "East Kent Goldings",
-        id: 402,
-      },{
-        name: "Fuggles",
-        id: 403,
-      },{
-        name: "Northdown",
-        id: 404,
-      }]
-  },
-  {
-    name: "New Zealand",
-    id: 5,
-    children: [{
-        name: "Dr Rudi",
-        id: 501,
-      },{
-        name: "Taiheke",
-        id: 502,
-      },{
-        name: "Moutere",
-        id: 503,
-      },{
-        name: "Riwaka",
-        id: 504,
-      },{
-        name: "Wakatu",
-        id: 505,
-      },{
-        name: "Wai-iti",
-        id: 506,
-      },{
-        name: "Nelson Sauvin",
-        id: 507,
-      },{
-        name: "Motueka",
-        id: 508,
-      },{
-        name: "Green Bullet",
-        id: 509,
-      },{
-        name: "Waimea",
-        id: 510,
-      }]
-  },
-]
 
 export default class NewScreen extends Component {
   constructor(props) {
@@ -190,6 +22,8 @@ export default class NewScreen extends Component {
       group: 'beer',
       method: '',
       beerType: '',
+      vol: '',
+      fermenterType: '',
       selectedItems: []
      };
   }
@@ -208,50 +42,47 @@ export default class NewScreen extends Component {
   render () {
     let index = 0;
     const beer = [
-        { key: index++, section: true, label: 'Beer' },
-        { key: index++, label: 'India pale ale' },
-        { key: index++, label: 'Pale ale' },
-        { key: index++, label: 'Brown ale' }, 
-        { key: index++, label: 'Amber ale' },
-        { key: index++, label: 'Wheat'},
-        { key: index++, label: 'Pilsner'},
-        { key: index++, label: 'Pale lager' },
-        { key: index++, label: 'Lager'},          
-        { key: index++, label: 'Stout'},   
-        { key: index++, label: 'Kolsch'}, 
-        { key: index++, label: 'Porter' },
+      { key: index++, section: true, label: 'Beer' },
+      { key: index++, label: 'India pale ale' },
+      { key: index++, label: 'Pale ale' },
+      { key: index++, label: 'Brown ale' }, 
+      { key: index++, label: 'Amber ale' },
+      { key: index++, label: 'Wheat'},
+      { key: index++, label: 'Pilsner'},
+      { key: index++, label: 'Pale lager' },
+      { key: index++, label: 'Lager'},          
+      { key: index++, label: 'Stout'},   
+      { key: index++, label: 'Kolsch'}, 
+      { key: index++, label: 'Porter' },
     ];
     const method = [
       { key: index++, section: false, label: 'Extract' },
       { key: index++, label: 'All grain' },
       { key: index++, label: 'Kit/canned' }
-    ]
+    ];
+    const fermenters = [
+      { key: index++, section: false, label: 'Carboy' },
+      { key: index++, label: 'Demijohn' },
+      { key: index++, label: 'Conical' },
+      { key: index++, label: 'Plastic' },
+      { key: index++, label: 'Steel Bucket' }
+    ];
 
     return (
       <View style={styles.container}>
 
-        <View style={{flex: 2}}>
-          <View style={
-            {alignItems:'center',
-            paddingBottom: 40}}>
+        <View style={{flex: 2, borderWidth: 1}}>
 
+          <View style={styles.viewSpacer}>
             <TextInput
               underlineColorAndroid='transparent'
-              style={{fontSize: 28,
-                color: 'black',
-                textAlign: 'center'
-                }}
+              style={styles.textInput}
               onChangeText={(title) => {
                 this.setState({title})}}
               value={this.state.title}/>
-
           </View>
 
-          <View style={{
-              alignItems:'center',
-              paddingBottom: 40
-            }}> 
-
+          <View style={styles.viewSpacer}> 
             <DatePicker
               date={this.state.date}
               placeholder="select date"
@@ -265,7 +96,7 @@ export default class NewScreen extends Component {
                   borderWidth:0,
               },
               dateText:{
-                fontSize: 24,
+                fontSize: 22,
                 color: 'grey',
               }
             }}
@@ -284,13 +115,9 @@ export default class NewScreen extends Component {
                 cancelButtonAccessibilityLabel={'Cancel Button'}
                 onChange={(option)=>{ this.setState({method:option.label})}}>
                 <TextInput
-                    style={{fontSize: 20,
-                      padding: 15, 
-                      color: 'black', 
-                      width: 300,
-                    textAlign: 'center'}}
+                    style={styles.modalText}
                     editable={false}
-                    placeholder="Select method"
+                    placeholder="Select brew method"
                     value={this.state.method} />
             </ModalSelector>
             <ModalSelector
@@ -302,22 +129,39 @@ export default class NewScreen extends Component {
                 cancelButtonAccessibilityLabel={'Cancel Button'}
                 onChange={(option)=>{ this.setState({beerType:option.label})}}>
                 <TextInput
-                    style={{fontSize: 20,
-                      padding: 15, 
-                      color: 'black', 
-                      width: 300,
-                    textAlign: 'center'}}
+                    style={styles.modalText}
                     editable={false}
-                    placeholder="Select type"
+                    placeholder="Select beer type"
                     value={this.state.beerType} />
             </ModalSelector>
+            <ModalSelector
+                data={fermenters}
+                initValue="Select type"
+                supportedOrientations={['landscape']}
+                accessible={true}
+                scrollViewAccessibilityLabel={'Scrollable options'}
+                cancelButtonAccessibilityLabel={'Cancel Button'}
+                onChange={(option)=>{ this.setState({fermenterType:option.label})}}>
+                <TextInput
+                    style={styles.modalText}
+                    editable={false}
+                    placeholder="Select fermenter"
+                    value={this.state.fermenterType} />
+            </ModalSelector>
+              <TextInput
+                style={styles.modalText}
+                underlineColorAndroid='transparent'
+                placeholder="Volume"
+                onChangeText={(vol) => {
+                  this.setState({vol})}}
+                value={this.state.vol}/>
           </View>
         </View>
 
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{flex: 1, borderWidth: 1}}>
         <MultiSelect
           hideTags
-          items={items}
+          items={hops}
           uniqueKey="id"
           subKey='children'
           styles = {{
@@ -348,7 +192,7 @@ export default class NewScreen extends Component {
       </ScrollView>
 
 
-        <View style={{alignItems:'center', paddingTop:50}}> 
+        <View style={{borderWidth: 1}}> 
           <BackButton /> 
         </View>  
       </View>
