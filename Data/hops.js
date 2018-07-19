@@ -5,6 +5,12 @@ export default [
       children: [{
           name: "Pride of Ringwood",
           id: 101,
+          alpha: [8.6, 10.5],
+          beta: [4.4, 7],
+          oil: [1.6, 1.8],
+          commercial: ['Ale', 'IPA'],
+          aroma: ['Herbal', 'Cedar', 'Oak'],
+          hopType: 'Aroma'
         },{
           name: "Melba",
           id: 102,

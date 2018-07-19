@@ -24,7 +24,8 @@ export default class NewScreen extends Component {
       beerType: '',
       vol: '',
       fermenterType: '',
-      selectedItems: []
+      selectedItems: [],
+      dataSource: [],
      };
   }
   componentWillMount(){
@@ -34,6 +35,22 @@ export default class NewScreen extends Component {
       date: currentDate
     })
   }
+
+  componentDidMount(){
+    return fetch('https://api.myjson.com/bins/7c2vu')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          dataSource: responseJson,
+        }, function(){
+
+        });
+
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+    }
 
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
@@ -72,6 +89,7 @@ export default class NewScreen extends Component {
       <View style={styles.container}>
 
         <View style={{flex: 2, borderWidth: 1}}>
+
 
           <View style={styles.viewSpacer}>
             <TextInput
@@ -148,13 +166,9 @@ export default class NewScreen extends Component {
                     placeholder="Select fermenter"
                     value={this.state.fermenterType} />
             </ModalSelector>
-              <TextInput
-                style={styles.modalText}
-                underlineColorAndroid='transparent'
-                placeholder="Volume"
-                onChangeText={(vol) => {
-                  this.setState({vol})}}
-                value={this.state.vol}/>
+            <Text>
+              {this.state.dataSource.name}
+            </Text>
           </View>
         </View>
 
