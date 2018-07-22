@@ -36,6 +36,7 @@ export default class NewScreen extends Component {
     })
   }
 
+  /*
   componentDidMount(){
     return fetch('https://api.myjson.com/bins/7c2vu')
       .then((response) => response.json())
@@ -51,6 +52,7 @@ export default class NewScreen extends Component {
         console.error(error);
       });
     }
+    */
 
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
@@ -177,7 +179,7 @@ export default class NewScreen extends Component {
           hideTags
           items={hops}
           uniqueKey="id"
-          subKey='children'
+          subKey='data'
           styles = {{
             container: {
               paddingHorizontal: 10

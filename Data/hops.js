@@ -2,18 +2,30 @@ export default [
     {  
       name: "Australian",
       id: 1,
-      children: [{
+      data: [{
           name: "Pride of Ringwood",
           id: 101,
-          alpha: [8.6, 10.5],
-          beta: [4.4, 7],
-          oil: [1.6, 1.8],
+          alpha: 9.6,
+          alpha_range: [8.6, 10.5],
+          beta: 5.7,
+          beta_range: [4.4, 7],
+          oil: 1.7,
+          oil_range:  [1.6, 1.8],
           commercial: ['Ale', 'IPA'],
           aroma: ['Herbal', 'Cedar', 'Oak'],
           hopType: 'Aroma'
         },{
           name: "Melba",
           id: 102,
+          alpha: 0,
+          alpha_range: [0, 0],
+          beta: 0,
+          beta_range: [0, 0],
+          oil: 0,
+          oil_range:  [0, 0],
+          commercial: ['', ''],
+          aroma: ['', '', ''],
+          hopType: ''
         },{
           name: "Vic Secret",
           id: 103,
@@ -43,7 +55,7 @@ export default [
     {
       name: "American",
       id: 2,
-      children: [{
+      data: [{
           name: "Cascade",
           id: 201,
         },{
@@ -87,7 +99,7 @@ export default [
     {
       name: "European",
       id: 3,
-      children: [{
+      data: [{
           name: "Hallertau",
           id: 301,
         },{
@@ -122,7 +134,7 @@ export default [
     {
       name: "British",
       id: 4,
-      children: [{
+      data: [{
           name: "Challenger",
           id: 401,
         },{
@@ -139,7 +151,7 @@ export default [
     {
       name: "New Zealand",
       id: 5,
-      children: [{
+      data: [{
           name: "Dr Rudi",
           id: 501,
         },{
