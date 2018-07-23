@@ -9,9 +9,11 @@ import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import hops from '../Data/hops';
-
+import { 
+  Table, 
+  Row, 
+  Rows } from 'react-native-table-component';
 
 export default class NewScreen extends Component {
   constructor(props) {
@@ -26,6 +28,14 @@ export default class NewScreen extends Component {
       fermenterType: '',
       selectedItems: [],
       dataSource: [],
+      tableHead: ['delete', 'hop', 'volume', 'time'],
+      tableData: [
+        ['102', 'Te hoppi hop','select', 'mins'],
+        ['502', 'Cascade', 'select', 'mins'],
+        ['303', 'Centennial', 'select', 'mins'],
+        ['402', 'Magnum', 'select', 'mins']
+      ],
+      test: ''
      };
   }
   componentWillMount(){
@@ -53,11 +63,15 @@ export default class NewScreen extends Component {
       });
     }
     */
-
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
   }
  
+  onSelectedObjectsChange = (selectedItems) => {
+    this.setState({test: selectedItems},
+    () => alert(this.state.test[0].name))
+  }
+
   render () {
     let index = 0;
     const beer = [
@@ -88,10 +102,10 @@ export default class NewScreen extends Component {
     ];
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
 
-        <View style={{flex: 2, borderWidth: 1}}>
-
+        <View style={{flex: 1}}>
+          
 
           <View style={styles.viewSpacer}>
             <TextInput
@@ -101,6 +115,7 @@ export default class NewScreen extends Component {
                 this.setState({title})}}
               value={this.state.title}/>
           </View>
+          <Text>{this.state.test.name}</Text>
 
           <View style={styles.viewSpacer}> 
             <DatePicker
@@ -172,46 +187,47 @@ export default class NewScreen extends Component {
               {this.state.dataSource.name}
             </Text>
           </View>
+
+          <MultiSelect
+            hideTags
+            items={hops}
+            uniqueKey="id"
+            subKey='data'
+            styles = {{
+              container: {
+                paddingHorizontal: 10
+              }
+            }}
+            ref={(component) => { this.multiSelect = component }}
+            onSelectedItemsChange={this.onSelectedItemsChange}
+            onSelectedItemObjectsChange={this.onSelectedObjectsChange}
+            selectedItems={this.state.selectedItems}
+            selectText="Select hops"
+            searchInputPlaceholderText="Search Items..."
+            onChangeInput={ (text)=> console.log(text)}
+            altFontFamily="ProximaNova-Light"
+            showDropDowns={true}
+            readOnlyHeadings={true}
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#CCC"
+            selectedItemTextColor="#CCC"
+            selectedItemIconColor="#CCC"
+            itemTextColor="#000"
+            displayKey="name"
+            searchInputStyle={{ color: '#CCC' }}
+            submitButtonColor="#CCC"
+            submitButtonText="Submit"
+          />        
+          <View style={styles.tablecontainer}>
+            <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+              <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
+              <Rows data={this.state.tableData} textStyle={styles.text}/>
+            </Table>
+          </View>
         </View>
 
-      <ScrollView style={{flex: 1, borderWidth: 1}}>
-        <MultiSelect
-          hideTags
-          items={hops}
-          uniqueKey="id"
-          subKey='data'
-          styles = {{
-            container: {
-              paddingHorizontal: 10
-            }
-          }}
-          ref={(component) => { this.multiSelect = component }}
-          onSelectedItemsChange={this.onSelectedItemsChange}
-          selectedItems={this.state.selectedItems}
-          selectText="Select hops"
-          searchInputPlaceholderText="Search Items..."
-          onChangeInput={ (text)=> console.log(text)}
-          altFontFamily="ProximaNova-Light"
-          showDropDowns={true}
-          readOnlyHeadings={true}
-          tagRemoveIconColor="#CCC"
-          tagBorderColor="#CCC"
-          tagTextColor="#CCC"
-          selectedItemTextColor="#CCC"
-          selectedItemIconColor="#CCC"
-          itemTextColor="#000"
-          displayKey="name"
-          searchInputStyle={{ color: '#CCC' }}
-          submitButtonColor="#CCC"
-          submitButtonText="Submit"
-        />
       </ScrollView>
-
-
-        <View style={{borderWidth: 1}}> 
-          <BackButton /> 
-        </View>  
-      </View>
     )
   }
 }

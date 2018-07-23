@@ -5,10 +5,8 @@ import {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 10
-    //alignItems: 'center',
-    //justifyContent: 'space-between'
+    marginLeft: 5,
+    marginRight:5,
   },
   textInput: {
     fontSize: 28,
@@ -25,5 +23,18 @@ export default StyleSheet.create({
   viewSpacer: {
     alignItems:'center',
     paddingBottom: 20
+  },
+  tablecontainer: { 
+    flex: 1, 
+    padding: 16, 
+    paddingTop: 30, 
+    backgroundColor: '#fff' 
+  },
+  head: { 
+    height: 40, 
+    backgroundColor: '#f1f8ff' 
+  },
+  text: { 
+    margin: 6 
   }
 })
