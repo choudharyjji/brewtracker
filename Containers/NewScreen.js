@@ -18,6 +18,7 @@ import {
 export default class NewScreen extends Component {
   constructor(props) {
     super(props)
+    this.get_table_data = this.get_table_data.bind(this);
     this.state = {
       date: '2018-01-01',
       title: 'Batch name',
@@ -63,13 +64,22 @@ export default class NewScreen extends Component {
       });
     }
     */
+  get_table_data(objs){
+    tableArray = []
+    for (i=0; i<objs.length; i++){
+      tableArray.push([objs[i].id, objs[i].name, 'sel', 'min'])
+    }
+    return tableArray
+  }
+
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
   }
  
   onSelectedObjectsChange = (selectedItems) => {
-    this.setState({test: selectedItems},
-    () => alert(this.state.test[0].name))
+    this.setState({
+      tableData: this.get_table_data(selectedItems)}
+    )
   }
 
   render () {
