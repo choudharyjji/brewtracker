@@ -19,6 +19,7 @@ export default class NewScreen extends Component {
   constructor(props) {
     super(props)
     this.get_table_data = this.get_table_data.bind(this);
+    this.clearSelectObjects = this.clearSelectObjects.bind(this);
     this.state = {
       date: '2018-01-01',
       title: 'Batch name',
@@ -30,12 +31,8 @@ export default class NewScreen extends Component {
       selectedItems: [],
       dataSource: [],
       tableHead: ['delete', 'hop', 'volume', 'time'],
-      tableData: [
-        ['102', 'Te hoppi hop','select', 'mins'],
-        ['502', 'Cascade', 'select', 'mins'],
-        ['303', 'Centennial', 'select', 'mins'],
-        ['402', 'Magnum', 'select', 'mins']
-      ],
+      tableData: [],
+      tableTemp: [],
       test: ''
      };
   }
@@ -72,14 +69,29 @@ export default class NewScreen extends Component {
     return tableArray
   }
 
+
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
   }
  
-  onSelectedObjectsChange = (selectedItems) => {
+  onSelectedObjectsChange = (selectedObjects) => {
     this.setState({
-      tableData: this.get_table_data(selectedItems)}
-    )
+      tableTemp: selectedObjects
+    })
+  }
+
+  clearSelectObjects = (selectedItems) => {
+    tableData = this.state.tableData
+    td = this.get_table_data(this.state.tableTemp)
+    for (i=0;i<td.length;i++) {
+      tableData.push(td[i])
+    }
+    this.setState({
+      tableData: tableData,
+    }, ()=>this.setState({
+      selectedItems: [],
+      tableTemp: []
+    }))
   }
 
   render () {
@@ -209,10 +221,12 @@ export default class NewScreen extends Component {
               }
             }}
             ref={(component) => { this.multiSelect = component }}
-            onSelectedItemsChange={this.onSelectedItemsChange}
+            onSelectedItemsChange={this.onSelectedItemsChange}            
             onSelectedItemObjectsChange={this.onSelectedObjectsChange}
+            onConfirm={this.clearSelectObjects}
             selectedItems={this.state.selectedItems}
             selectText="Select hops"
+            showChips={false}
             searchInputPlaceholderText="Search Items..."
             onChangeInput={ (text)=> console.log(text)}
             altFontFamily="ProximaNova-Light"
