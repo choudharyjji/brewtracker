@@ -34,7 +34,8 @@ export default StyleSheet.create({
     height: 40, 
     backgroundColor: '#f1f8ff' 
   },
-  text: { 
-    margin: 6 
-  }
+  text: { margin: 6 },
+  row: { flexDirection: 'row', backgroundColor: '#FFF1C1' },
+  btn: { width: 58, height: 18, backgroundColor: '#78B7BB',  borderRadius: 2 },
+  btnText: { textAlign: 'center', color: '#fff' }
 })

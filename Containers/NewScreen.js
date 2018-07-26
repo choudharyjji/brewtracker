@@ -2,16 +2,19 @@ import React, { Component } from 'react'
 import { 
   View, 
   Text,
-  TextInput, 
+  TextInput,
+  TouchableOpacity, 
   ScrollView } from 'react-native'
-import BackButton from '../Components/BackButton';
 import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import hops from '../Data/hops';
 import { 
-  Table, 
+  Cell,
+  Table,
+  TableWrapper, 
   Row, 
   Rows } from 'react-native-table-component';
 
@@ -94,6 +97,14 @@ export default class NewScreen extends Component {
     }))
   }
 
+  deleteHop(index) {
+    td = this.state.tableData
+    td.splice(index, 1)
+    this.setState({
+      tableData: td
+    })
+  }
+
   render () {
     let index = 0;
     const beer = [
@@ -123,12 +134,19 @@ export default class NewScreen extends Component {
       { key: index++, label: 'Steel Bucket' }
     ];
 
+    const state = this.state;
+    const element = (data, index) => (
+      <TouchableOpacity 
+        style={{alignItems:'center'}}
+        onPress={() => this.deleteHop(index)}>
+        <Icon name="trash" size={20} color="#78B7BB" />
+      </TouchableOpacity>
+    );
+
     return (
       <ScrollView style={styles.container}>
 
         <View style={{flex: 1}}>
-          
-
           <View style={styles.viewSpacer}>
             <TextInput
               underlineColorAndroid='transparent'
@@ -245,8 +263,21 @@ export default class NewScreen extends Component {
           />        
           <View style={styles.tablecontainer}>
             <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-              <Row data={this.state.tableHead} style={styles.head} textStyle={styles.text}/>
-              <Rows data={this.state.tableData} textStyle={styles.text}/>
+            <Row data={state.tableHead} style={styles.head} textStyle={styles.text}/>
+              {
+                state.tableData.map((rowData, index) => (
+                  <TableWrapper key={index} style={styles.row}>
+                    {
+                      rowData.map((cellData, cellIndex) => (
+                        <Cell 
+                          key={cellIndex} 
+                          data={cellIndex === 0 ? element(cellData, index) : cellData} 
+                          textStyle={styles.text}/>
+                        ))
+                    }
+                  </TableWrapper>
+                ))
+              }
             </Table>
           </View>
         </View>
