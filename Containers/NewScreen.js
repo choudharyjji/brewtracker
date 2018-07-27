@@ -105,6 +105,7 @@ export default class NewScreen extends Component {
     })
   }
 
+
   render () {
     let index = 0;
     const beer = [
@@ -143,7 +144,9 @@ export default class NewScreen extends Component {
       </TouchableOpacity>
     );
 
+
     return (
+
       <ScrollView style={styles.container}>
 
         <View style={{flex: 1}}>
@@ -267,14 +270,14 @@ export default class NewScreen extends Component {
               {
                 state.tableData.map((rowData, index) => (
                   <TableWrapper key={index} style={styles.row}>
-                    {
+                  {
                       rowData.map((cellData, cellIndex) => (
-                        <Cell 
+                      <Cell 
                           key={cellIndex} 
                           data={cellIndex === 0 ? element(cellData, index) : cellData} 
                           textStyle={styles.text}/>
-                        ))
-                    }
+                      ))
+                  }
                   </TableWrapper>
                 ))
               }
