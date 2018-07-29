@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity, 
+  FlatList,
   ScrollView } from 'react-native'
 import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
@@ -11,17 +12,12 @@ import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import hops from '../Data/hops';
-import { 
-  Cell,
-  Table,
-  TableWrapper, 
-  Row, 
-  Rows } from 'react-native-table-component';
+
 
 export default class NewScreen extends Component {
   constructor(props) {
     super(props)
-    this.get_table_data = this.get_table_data.bind(this);
+    //this.get_table_data = this.get_table_data.bind(this);
     this.clearSelectObjects = this.clearSelectObjects.bind(this);
     this.state = {
       date: '2018-01-01',
@@ -39,6 +35,7 @@ export default class NewScreen extends Component {
       test: ''
      };
   }
+  
   componentWillMount(){
     // This runs before render()
     var currentDate = new Date();
@@ -47,31 +44,16 @@ export default class NewScreen extends Component {
     })
   }
 
-  /*
-  componentDidMount(){
-    return fetch('https://api.myjson.com/bins/7c2vu')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          dataSource: responseJson,
-        }, function(){
-
-        });
-
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
-    }
-    */
-  get_table_data(objs){
+  createUniqueKey(objs){
     tableArray = []
     for (i=0; i<objs.length; i++){
-      tableArray.push([objs[i].id, objs[i].name, 'sel', 'min'])
+      unique_key = i+1
+      dat = objs[i]
+      dat['key'] = unique_key.toString();
+      tableArray.push(dat)
     }
     return tableArray
   }
-
 
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
@@ -84,25 +66,37 @@ export default class NewScreen extends Component {
   }
 
   clearSelectObjects = (selectedItems) => {
-    tableData = this.state.tableData
-    td = this.get_table_data(this.state.tableTemp)
-    for (i=0;i<td.length;i++) {
-      tableData.push(td[i])
-    }
+    td = this.state.tableData
+    tt = this.state.tableTemp
+    td.push.apply(td, tt)
     this.setState({
-      tableData: tableData,
+      tableData: this.createUniqueKey(td),
     }, ()=>this.setState({
       selectedItems: [],
       tableTemp: []
     }))
   }
 
-  deleteHop(index) {
-    td = this.state.tableData
-    td.splice(index, 1)
+  deleteHop(item) {
+    var tableDataTemp = [...this.state.tableData]
+    let idx = tableDataTemp.indexOf(item);
+    tableDataTemp.splice(idx, 1)
     this.setState({
-      tableData: td
+      tableData: tableDataTemp
     })
+  }
+
+  renderHopCard(cardItem) {
+    return (
+      <View style={{flexDirection:'row'}}>
+        <TouchableOpacity 
+          style={{alignItems:'center'}}
+          onPress={() => this.deleteHop(cardItem)}>
+          <Icon name="trash" size={20} color="black" />
+        </TouchableOpacity>
+        <Text style={{fontSize:20}}>{cardItem.name}</Text>
+      </View>
+    )
   }
 
 
@@ -134,15 +128,6 @@ export default class NewScreen extends Component {
       { key: index++, label: 'Plastic' },
       { key: index++, label: 'Steel Bucket' }
     ];
-
-    const state = this.state;
-    const element = (data, index) => (
-      <TouchableOpacity 
-        style={{alignItems:'center'}}
-        onPress={() => this.deleteHop(index)}>
-        <Icon name="trash" size={20} color="#78B7BB" />
-      </TouchableOpacity>
-    );
 
 
     return (
@@ -264,24 +249,13 @@ export default class NewScreen extends Component {
             submitButtonColor="#CCC"
             submitButtonText="Submit"
           />        
-          <View style={styles.tablecontainer}>
-            <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-            <Row data={state.tableHead} style={styles.head} textStyle={styles.text}/>
-              {
-                state.tableData.map((rowData, index) => (
-                  <TableWrapper key={index} style={styles.row}>
-                  {
-                      rowData.map((cellData, cellIndex) => (
-                      <Cell 
-                          key={cellIndex} 
-                          data={cellIndex === 0 ? element(cellData, index) : cellData} 
-                          textStyle={styles.text}/>
-                      ))
-                  }
-                  </TableWrapper>
-                ))
-              }
-            </Table>
+          <View style={{borderWidth: 1}}>
+            <FlatList
+              style={{flex: 1}}
+              data={this.state.tableData}
+              renderItem={({item}) => this.renderHopCard(item)}
+              keyExtractor={item => item.key}
+            />
           </View>
         </View>
 
