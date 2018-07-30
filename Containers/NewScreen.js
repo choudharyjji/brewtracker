@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity, 
   FlatList,
+  Modal,
   ScrollView } from 'react-native'
 import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
@@ -32,7 +33,8 @@ export default class NewScreen extends Component {
       tableHead: ['delete', 'hop', 'volume', 'time'],
       tableData: [],
       tableTemp: [],
-      test: ''
+      test: '',
+      modalVisible: false,
      };
   }
   
@@ -86,15 +88,59 @@ export default class NewScreen extends Component {
     })
   }
 
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+
   renderHopCard(cardItem) {
     return (
-      <View style={{flexDirection:'row'}}>
-        <TouchableOpacity 
-          style={{alignItems:'center'}}
-          onPress={() => this.deleteHop(cardItem)}>
-          <Icon name="trash" size={20} color="black" />
-        </TouchableOpacity>
-        <Text style={{fontSize:20}}>{cardItem.name}</Text>
+      <View style={{
+          flexDirection:'row',
+          flex: 1, 
+          justifyContent: 'space-between'
+          }}>
+        <View style={{alignItems: 'center',justifyContent: 'center'}}>
+          <TouchableOpacity 
+            style={{justifyContent: 'center'}}
+            onPress={() => this.deleteHop(cardItem)}>
+            <Icon name="trash" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <Text style={{fontSize:20}}>
+          {cardItem.name}
+        </Text>
+
+        <View style={{alignItems: 'center',justifyContent: 'center'}}>        
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              this.setModalVisible(!this.state.modalVisible);
+            }}>
+            <View style={{marginTop: 22, 
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'}}>
+              <View>
+                <Text>{cardItem.name}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setModalVisible(!this.state.modalVisible);
+                  }}>
+                  <Text>Hide Modal</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+          <TouchableOpacity
+            onPress={() => {this.setModalVisible(true);}}>
+            <Icon name="external-link" size={20} color="black" />
+          </TouchableOpacity>          
+        </View>          
       </View>
     )
   }
