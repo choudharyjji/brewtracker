@@ -13,7 +13,7 @@ import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import hops from '../Data/hops';
-
+import Slider from "react-native-slider";
 
 export default class NewScreen extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ export default class NewScreen extends Component {
       tableData: [],
       tableTemp: [],
       test: '',
-      modalVisible: false,
+      modalVisible: false
      };
   }
   
@@ -88,10 +88,14 @@ export default class NewScreen extends Component {
     })
   }
 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+  setQuantity(value, item) {
+    var tableDataTemp = [...this.state.tableData]
+    let idx = tableDataTemp.indexOf(item);
+    tableDataTemp[idx]['quantity'] = Math.round(value)
+    this.setState({
+      tableData: tableDataTemp
+    });
   }
-
 
   renderHopCard(cardItem) {
     return (
@@ -100,7 +104,11 @@ export default class NewScreen extends Component {
           flex: 1, 
           justifyContent: 'space-between'
           }}>
-        <View style={{alignItems: 'center',justifyContent: 'center'}}>
+
+        <View style={{
+          flex: 0.5,
+          alignItems: 'center',
+          justifyContent: 'center'}}>
           <TouchableOpacity 
             style={{justifyContent: 'center'}}
             onPress={() => this.deleteHop(cardItem)}>
@@ -108,38 +116,37 @@ export default class NewScreen extends Component {
           </TouchableOpacity>
         </View>
 
-        <Text style={{fontSize:20}}>
-          {cardItem.name}
-        </Text>
+        <View style={{
+            flex: 2,
+            alignItems: 'flex-start',
+            justifyContent: 'center'}}>
+          <Text style={{fontSize:20}}>
+              {cardItem.name}
+          </Text>
+        </View>
 
-        <View style={{alignItems: 'center',justifyContent: 'center'}}>        
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              this.setModalVisible(!this.state.modalVisible);
-            }}>
-            <View style={{marginTop: 22, 
-                flex: 1,
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center'}}>
-              <View>
-                <Text>{cardItem.name}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
-                  }}>
-                  <Text>Hide Modal</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-          <TouchableOpacity
-            onPress={() => {this.setModalVisible(true);}}>
-            <Icon name="external-link" size={20} color="black" />
-          </TouchableOpacity>          
+        <View style={{
+            flex: 0.5,
+            alignItems: 'flex-end',
+            justifyContent: 'center'}}>
+          <Text style={{fontSize:20}}>
+              {cardItem.quantity}
+          </Text>
+        </View>
+
+        <View style={{
+          flex: 2,
+          alignItems: 'stretch',
+          justifyContent: 'center',
+          marginLeft: 10,
+          marginRight: 10}}>
+          <Slider
+            value={60}
+            step={1}
+            minimumValue={0}
+            maximumValue={80}
+            onValueChange={(value) => this.setQuantity(value, cardItem) }
+          />
         </View>          
       </View>
     )
