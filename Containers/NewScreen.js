@@ -85,7 +85,7 @@ export default class NewScreen extends Component {
     tableDataTemp.splice(idx, 1)
     this.setState({
       tableData: tableDataTemp
-    })
+    }, ()=> console.log(this.state.tableData))
   }
 
   setQuantity(value, item) {
