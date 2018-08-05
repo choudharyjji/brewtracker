@@ -30,9 +30,9 @@ export default class NewScreen extends Component {
       fermenterType: '',
       selectedItems: [],
       dataSource: [],
-      tableHead: ['delete', 'hop', 'volume', 'time'],
+      //tableHead: ['delete', 'hop', 'volume', 'time'],
       tableData: [],
-      tableTemp: [],
+      selectedHops: [],
       test: '',
       modalVisible: false
      };
@@ -46,15 +46,50 @@ export default class NewScreen extends Component {
     })
   }
 
-  createUniqueKey(objs){
-    tableArray = []
-    for (i=0; i<objs.length; i++){
-      unique_key = i+1
-      dat = objs[i]
-      dat['key'] = unique_key.toString();
-      tableArray.push(dat)
+  getExistingKeys(objs){
+    tableData = this.state.tableData
+    arrayOfKeys = []
+    for (var obj in tableData){
+      arrayOfKeys.push(obj['key'])
     }
-    return tableArray
+    return arrayOfKeys
+  }
+
+  getRandomInt(multiplier){
+    randInt = Math.floor((Math.random() * multiplier) + 1)
+    return randInt.toString()
+  }
+
+  createUniqueKey(objs){
+    existingKeys = this.getExistingKeys(this.state.tableData);
+    tableArrayToReturn = [];
+    processedKeys = [];
+    
+    for (i=0; i<objs.length; i++){
+      isUnique = false;
+
+      while (isUnique == false){
+        randomKeyGen = this.getRandomInt(1000000);
+        
+        if (existingKeys.indexOf(randomKeyGen) == -1 &&
+            processedKeys.indexOf(randomKeyGen) == -1){
+          processedKeys.push(randomKeyGen);
+          tempData = objs[i];
+          tempData['key'] = randomKeyGen;
+          tableArrayToReturn.push(tempData);
+          isUnique = true;
+        } else {
+          processedKeys.push(randomKeyGen);
+        }
+        
+      }
+    }
+    return tableArrayToReturn
+  }
+
+  makeCopies(selectedArray){
+    var clonedArray = JSON.parse(JSON.stringify(selectedArray))
+    return clonedArray
   }
 
   onSelectedItemsChange = (selectedItems) => {
@@ -62,20 +97,21 @@ export default class NewScreen extends Component {
   }
  
   onSelectedObjectsChange = (selectedObjects) => {
+    var copiedObjects = this.makeCopies(selectedObjects) 
     this.setState({
-      tableTemp: selectedObjects
+      selectedHops: copiedObjects
     })
   }
 
   clearSelectObjects = (selectedItems) => {
     td = this.state.tableData
-    tt = this.state.tableTemp
-    td.push.apply(td, tt)
+    sh = this.state.selectedHops
+    td.push.apply(td, sh)
     this.setState({
       tableData: this.createUniqueKey(td),
     }, ()=>this.setState({
       selectedItems: [],
-      tableTemp: []
+      selectedHops: []
     }))
   }
 
