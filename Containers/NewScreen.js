@@ -18,7 +18,6 @@ import Slider from "react-native-slider";
 export default class NewScreen extends Component {
   constructor(props) {
     super(props)
-    //this.get_table_data = this.get_table_data.bind(this);
     this.clearSelectObjects = this.clearSelectObjects.bind(this);
     this.state = {
       date: '2018-01-01',
@@ -26,20 +25,18 @@ export default class NewScreen extends Component {
       group: 'beer',
       method: '',
       beerType: '',
-      vol: '',
+      volume: 5,
       fermenterType: '',
       selectedItems: [],
       dataSource: [],
-      //tableHead: ['delete', 'hop', 'volume', 'time'],
       tableData: [],
       selectedHops: [],
       test: '',
-      modalVisible: false
+      modalVisible: false,
      };
   }
   
   componentWillMount(){
-    // This runs before render()
     var currentDate = new Date();
     this.setState({
       date: currentDate
@@ -133,6 +130,15 @@ export default class NewScreen extends Component {
     });
   }
 
+  setTime(value, item) {
+    var tableDataTemp = [...this.state.tableData]
+    let idx = tableDataTemp.indexOf(item);
+    tableDataTemp[idx]['boiltime'] = Math.round(value)
+    this.setState({
+      tableData: tableDataTemp
+    });
+  }
+
   renderHopCard(cardItem) {
     return (
       <View style={{
@@ -161,29 +167,74 @@ export default class NewScreen extends Component {
           </Text>
         </View>
 
-        <View style={{
-            flex: 0.5,
-            alignItems: 'flex-end',
-            justifyContent: 'center'}}>
-          <Text style={{fontSize:20}}>
-              {cardItem.quantity}
-          </Text>
-        </View>
+          
+        <View style={{flex: 3,
+            flexDirection: 'column',
+            marginLeft: 10,
+            marginRight: 10}}>
 
-        <View style={{
-          flex: 2,
-          alignItems: 'stretch',
-          justifyContent: 'center',
-          marginLeft: 10,
-          marginRight: 10}}>
-          <Slider
-            value={60}
-            step={1}
-            minimumValue={0}
-            maximumValue={80}
-            onValueChange={(value) => this.setQuantity(value, cardItem) }
-          />
-        </View>          
+            <View style={{flexDirection: 'row'}}>
+              <View style={{
+                flex: 0.5,
+                justifyContent: 'center'}}>
+                <Text style={{fontSize:20}}>
+                    Q
+                </Text>
+              </View>
+              <View style={{
+                flex: 2,
+                alignItems: 'stretch',
+                justifyContent: 'center',
+                marginLeft: 10,
+                marginRight: 10}}>
+                <Slider
+                  value={cardItem.quantity}
+                  step={1}
+                  minimumValue={0}
+                  maximumValue={40}
+                  onValueChange={(value) => this.setQuantity(value, cardItem) }
+                />
+              </View>
+              <View style={{
+                flex: 0.5,
+                justifyContent: 'center'}}>
+                <Text style={{fontSize:20}}>
+                    {cardItem.quantity}
+                </Text>
+              </View>
+            </View>
+
+            <View style={{flexDirection: 'row'}}>
+              <View style={{
+                flex: 0.5,
+                justifyContent: 'center'}}>
+                <Text style={{fontSize:20}}>
+                    T
+                </Text>
+              </View>
+              <View style={{
+                flex: 2,
+                alignItems: 'stretch',
+                justifyContent: 'center',
+                marginLeft: 10,
+                marginRight: 10}}>
+                <Slider
+                  value={cardItem.boiltime}
+                  step={1}
+                  minimumValue={0}
+                  maximumValue={80}
+                  onValueChange={(value) => this.setTime(value, cardItem) }
+                />
+              </View>
+              <View style={{
+                flex: 0.5,
+                justifyContent: 'center'}}>
+                <Text style={{fontSize:20}}>
+                    {cardItem.boiltime}
+                </Text>
+              </View>
+            </View>    
+         </View>        
       </View>
     )
   }
@@ -224,13 +275,13 @@ export default class NewScreen extends Component {
       <ScrollView style={styles.container}>
 
         <View style={{flex: 1}}>
-          <View style={styles.viewSpacer}>
+          <View style={{paddingBottom: 20}}>
             <TextInput
               underlineColorAndroid='transparent'
               style={styles.textInput}
               onChangeText={(title) => {
                 this.setState({title})}}
-              value={this.state.title}/>
+              placeholder={this.state.title}/>
           </View>
           <Text>{this.state.test.name}</Text>
 
@@ -300,10 +351,85 @@ export default class NewScreen extends Component {
                     placeholder="Select fermenter"
                     value={this.state.fermenterType} />
             </ModalSelector>
-            <Text>
-              {this.state.dataSource.name}
-            </Text>
+
           </View>
+          <View style={{
+              flexDirection:'row',
+              alignItems: 'center',
+              marginLeft: 10,
+              marginRight: 10}}>
+            <View style={{
+                flex: 2, 
+                justifyContent: 'flex-end'}}>
+              <Text style={{
+                textAlign: 'center',
+                fontSize: 18}}>
+                  Volume (litres)
+                </Text>
+            </View>
+            <TouchableOpacity style={{
+                flex: 1,
+                borderRadius: 6,
+                borderWidth: 0,
+                backgroundColor: '#61A4FF',
+                marginLeft: 2,
+                marginRight: 2}}
+                onPress={() => this.setState({volume: 5})}
+              >
+              <Text style={{
+                textAlign: 'center',
+                fontSize: 25,
+                color:'white'}}>5</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+                flex: 1,
+                borderRadius: 6,
+                borderWidth: 0,
+                backgroundColor: '#61A4ff',
+                marginLeft: 2,
+                marginRight: 2}}
+                onPress={() => this.setState({volume: 23})}
+              >
+              <Text style={{
+                textAlign: 'center',
+                fontSize: 25,
+                color:'white'}}>23</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+                flex: 1,
+                borderRadius: 6,
+                borderWidth: 0,
+                backgroundColor: '#61A4ff',
+                marginLeft: 2,
+                marginRight: 2}}
+                onPress={() => this.setState({volume: 60})}
+              >
+              <Text style={{
+                textAlign: 'center',
+                fontSize: 25,
+                color:'white'}}>60</Text>
+            </TouchableOpacity>
+            <View style={{
+                  flex: 3,
+                  alignItems: 'stretch',
+                  justifyContent: 'center',
+                  marginLeft: 10,
+                  marginRight: 10}}>
+                <Slider
+                  value={this.state.volume}
+                  step={0.5}
+                  minimumValue={1}
+                  maximumValue={100}
+                  onValueChange={(value) => this.setState({volume: value}) }
+                />
+              </View>
+              <View style={{flex: 1}}>
+                <Text style={{
+                textAlign: 'center',
+                fontSize: 20}}>{this.state.volume}</Text>
+            </View>
+          </View>
+
 
           <MultiSelect
             hideTags
