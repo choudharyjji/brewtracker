@@ -33,6 +33,7 @@ export default class NewScreen extends Component {
       selectedHops: [],
       test: '',
       modalVisible: false,
+      hopBorder: false
      };
   }
   
@@ -107,9 +108,10 @@ export default class NewScreen extends Component {
     this.setState({
       tableData: this.createUniqueKey(td),
     }, ()=>this.setState({
-      selectedItems: [],
-      selectedHops: []
-    }))
+        selectedItems: [],
+        selectedHops: [],
+        }, () => this.setBorderProp())
+    )
   }
 
   deleteHop(item) {
@@ -118,7 +120,19 @@ export default class NewScreen extends Component {
     tableDataTemp.splice(idx, 1)
     this.setState({
       tableData: tableDataTemp
-    }, ()=> console.log(this.state.tableData))
+    }, () => this.setBorderProp())
+  }
+
+  setBorderProp() {
+    if (this.state.tableData.length == 0) {
+      this.setState({
+        hopBorder: false
+      })
+    } else {
+      this.setState({
+        hopBorder: true
+      })      
+    }
   }
 
   setQuantity(value, item) {
@@ -177,9 +191,7 @@ export default class NewScreen extends Component {
               <View style={{
                 flex: 0.5,
                 justifyContent: 'center'}}>
-                <Text style={{fontSize:20}}>
-                    Q
-                </Text>
+                <Icon name="balance-scale" size={20} color="black" />
               </View>
               <View style={{
                 flex: 2,
@@ -208,9 +220,7 @@ export default class NewScreen extends Component {
               <View style={{
                 flex: 0.5,
                 justifyContent: 'center'}}>
-                <Text style={{fontSize:20}}>
-                    T
-                </Text>
+                <Icon name="hourglass-half" size={20} color="black" />
               </View>
               <View style={{
                 flex: 2,
@@ -464,7 +474,11 @@ export default class NewScreen extends Component {
             submitButtonColor="#CCC"
             submitButtonText="Submit"
           />        
-          <View style={{borderWidth: 1}}>
+          <View style={
+            [{backgroundColor: 'white'},
+              this.state.hopBorder
+                ? {borderWidth: 1} 
+                : {borderWidth: 0}]}>
             <FlatList
               style={{flex: 1}}
               data={this.state.tableData}
