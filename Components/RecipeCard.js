@@ -21,7 +21,10 @@ export default class RecipeCard extends Component {
             <View style={styles.container}>
 
               <View style={styles.deleteElement}>
-                <TouchableOpacity style={styles.deleteButton}>
+                <TouchableOpacity 
+                  style={styles.deleteButton}
+                  onPress={() => 
+                    this.props.deleteHop(this.state.recipe)} >
                   <Icon name="trash" size={20} color="black" />
                 </TouchableOpacity>
               </View>

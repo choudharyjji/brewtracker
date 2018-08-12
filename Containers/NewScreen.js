@@ -156,7 +156,9 @@ export default class NewScreen extends Component {
 
   renderHopCard(cardItem) {
     return (
-      <RecipeCard mark={cardItem} />
+      <RecipeCard 
+        mark={cardItem} 
+        deleteHop={this.deleteHop.bind(this)} />
     )
   }
 
