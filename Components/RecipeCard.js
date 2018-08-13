@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     StyleSheet  
 } from 'react-native';
+import Slider from "react-native-slider";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -24,7 +25,7 @@ export default class RecipeCard extends Component {
                 <TouchableOpacity 
                   style={styles.deleteButton}
                   onPress={() => 
-                    this.props.deleteHop(this.state.recipe)} >
+                    this.props.deleteItem(this.state.recipe)} >
                   <Icon name="trash" size={20} color="black" />
                 </TouchableOpacity>
               </View>
@@ -33,6 +34,49 @@ export default class RecipeCard extends Component {
                 <Text style={styles.titleText}>
                     {this.state.recipe.name}
                 </Text>
+              </View>
+
+              <View style={styles.measureBlock}>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.measureBlockIcon}>
+                    <Icon name="balance-scale" size={20} color="black" />
+                  </View>
+                  <View style={styles.measureBlockSlider}>
+                    <Slider
+                      value={this.state.recipe.quantity}
+                      step={1}
+                      minimumValue={0}
+                      maximumValue={40}
+                      onValueChange={(value) => 
+                        this.props.setQuantity(
+                          value, this.state.recipe) } />
+                  </View>
+                  <View style={styles.measureBlockIcon}>
+                    <Text style={{fontSize:20}}>
+                        {this.state.recipe.quantity}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.measureBlockIcon}>
+                    <Icon name="hourglass-half" size={20} color="black" />
+                  </View>
+                  <View style={styles.measureBlockSlider}>
+                    <Slider
+                      value={this.state.recipe.boiltime}
+                      step={1}
+                      minimumValue={0}
+                      maximumValue={80}
+                      onValueChange={(value) => 
+                        this.props.setTime(
+                          value, this.state.recipe) } />
+                  </View>
+                  <View style={styles.measureBlockIcon}>
+                    <Text style={{fontSize:20}}>
+                        {this.state.recipe.boiltime}
+                    </Text>
+                  </View>
+                </View>
               </View>
 
           </View>
@@ -47,7 +91,7 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between'
     },
     deleteElement: {
-      flex: 1,
+      flex: 0.5,
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -61,100 +105,23 @@ const styles = StyleSheet.create({
     },
     titleText: {
       fontSize:20
+    },
+    measureBlock: {
+      flex: 3,
+      flexDirection: 'column',
+      marginLeft: 10,
+      marginRight: 10
+    },
+    measureBlockIcon: {
+      flex: 0.5,
+      justifyContent: 'center'
+    },
+    measureBlockSlider: {
+      flex: 2,
+      alignItems: 'stretch',
+      justifyContent: 'center',
+      marginLeft: 10,
+      marginRight: 10
     }
   });
 
-
-  /*
-      <View style={{
-          flexDirection:'row',
-          flex: 1, 
-          justifyContent: 'space-between'
-          }}>
-
-        <View style={{
-          flex: 0.5,
-          alignItems: 'center',
-          justifyContent: 'center'}}>
-          <TouchableOpacity 
-            style={{justifyContent: 'center'}}
-            onPress={() => this.deleteHop(cardItem)}>
-            <Icon name="trash" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        <View style={{
-            flex: 2,
-            alignItems: 'flex-start',
-            justifyContent: 'center'}}>
-          <Text style={{fontSize:20}}>
-              {cardItem.name}
-          </Text>
-        </View>
-
-          
-        <View style={{flex: 3,
-            flexDirection: 'column',
-            marginLeft: 10,
-            marginRight: 10}}>
-
-            <View style={{flexDirection: 'row'}}>
-              <View style={{
-                flex: 0.5,
-                justifyContent: 'center'}}>
-                <Icon name="balance-scale" size={20} color="black" />
-              </View>
-              <View style={{
-                flex: 2,
-                alignItems: 'stretch',
-                justifyContent: 'center',
-                marginLeft: 10,
-                marginRight: 10}}>
-                <Slider
-                  value={cardItem.quantity}
-                  step={1}
-                  minimumValue={0}
-                  maximumValue={40}
-                  onValueChange={(value) => this.setQuantity(value, cardItem) }
-                />
-              </View>
-              <View style={{
-                flex: 0.5,
-                justifyContent: 'center'}}>
-                <Text style={{fontSize:20}}>
-                    {cardItem.quantity}
-                </Text>
-              </View>
-            </View>
-
-            <View style={{flexDirection: 'row'}}>
-              <View style={{
-                flex: 0.5,
-                justifyContent: 'center'}}>
-                <Icon name="hourglass-half" size={20} color="black" />
-              </View>
-              <View style={{
-                flex: 2,
-                alignItems: 'stretch',
-                justifyContent: 'center',
-                marginLeft: 10,
-                marginRight: 10}}>
-                <Slider
-                  value={cardItem.boiltime}
-                  step={1}
-                  minimumValue={0}
-                  maximumValue={80}
-                  onValueChange={(value) => this.setTime(value, cardItem) }
-                />
-              </View>
-              <View style={{
-                flex: 0.5,
-                justifyContent: 'center'}}>
-                <Text style={{fontSize:20}}>
-                    {cardItem.boiltime}
-                </Text>
-              </View>
-            </View>    
-         </View>        
-      </View>
-*/
