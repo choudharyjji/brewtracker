@@ -10,7 +10,6 @@ import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
 import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import hops from '../Data/hops';
 import grains from '../Data/grains';
 import Slider from "react-native-slider";
@@ -28,19 +27,19 @@ export default class NewScreen extends Component {
       volume: 5,
       fermenterType: '',
       dataSource: [],
+      modalVisible: false,
       //
-      selectedItems: [],
-      tableData: [],
+      hopItems: [],
+      hopData: [],
       selectedHops: [],
       hopBorder: false,
       //
       grainItems: [],
       grainData: [],
       selectedGrains: [],
-      grainBorder: false,
+      grainBorder: false
       //
-      test: '',
-      modalVisible: false
+
      };
   }
   
@@ -52,11 +51,11 @@ export default class NewScreen extends Component {
   }
 
   /*---------------------------------------*/
-  getExistingKeys(objs){
+  /*getExistingKeys(objs){
     // hops
-    tableData = this.state.tableData
+    hopData = this.state.hopData
     arrayOfKeys = []
-    for (var obj in tableData){
+    for (var obj in hopData){
       arrayOfKeys.push(obj['key'])
     }
     return arrayOfKeys
@@ -70,6 +69,14 @@ export default class NewScreen extends Component {
       arrayOfKeys.push(obj['key'])
     }
     return arrayOfKeys
+  }*/
+
+  getExistingKeys(dat){
+    arrayOfKeys = []
+    for (var obj in dat){
+      arrayOfKeys.push(obj['key'])
+    }
+    return arrayOfKeys
   }
 
   /*---------------------------------------*/
@@ -79,9 +86,10 @@ export default class NewScreen extends Component {
   }
 
   /*---------------------------------------*/
+  /*
   createUniqueKey(objs){
     // hops
-    existingKeys = this.getExistingKeys(this.state.tableData);
+    existingKeys = this.getExistingKeys(this.state.hopData);
     tableArrayToReturn = [];
     processedKeys = [];
     
@@ -108,7 +116,7 @@ export default class NewScreen extends Component {
 
   createUniqueKeyGrains(objs){
     // Grains
-    existingKeys = this.getExistingKeysGrains(this.state.grainData);
+    existingKeys = this.getExistingKeys(this.state.grainData);
     tableArrayToReturn = [];
     processedKeys = [];
     
@@ -133,17 +141,37 @@ export default class NewScreen extends Component {
     }
     return tableArrayToReturn
   }
+  */
+  createUniqueKey(dat){
+    existingKeys = this.getExistingKeys(dat);
+    tableArrayToReturn = [];
+    processedKeys = [];
+    
+    for (i=0; i<dat.length; i++){
+      isUnique = false;
 
-  /*---------------------------------------*/
-  makeCopies(selectedArray){
-    var clonedArray = JSON.parse(JSON.stringify(selectedArray))
-    return clonedArray
+      while (isUnique == false){
+        randomKeyGen = this.getRandomInt(1000000);
+        
+        if (existingKeys.indexOf(randomKeyGen) == -1 &&
+            processedKeys.indexOf(randomKeyGen) == -1){
+          processedKeys.push(randomKeyGen);
+          tempData = dat[i];
+          tempData['key'] = randomKeyGen;
+          tableArrayToReturn.push(tempData);
+          isUnique = true;
+        } else {
+          processedKeys.push(randomKeyGen);
+        }
+      }
+    }
+    return tableArrayToReturn
   }
 
   /*---------------------------------------*/
-  onSelectedItemsChange = (selectedItems) => {
+  onSelectedItemsChange = (hopItems) => {
     // mandatory -hops
-    this.setState({ selectedItems });
+    this.setState({ hopItems });
   }
  
   onSelectedGrainsChange = (grainItems) => {
@@ -152,6 +180,11 @@ export default class NewScreen extends Component {
   }
 
   /*---------------------------------------*/
+  makeCopies(selectedArray){
+    var clonedArray = JSON.parse(JSON.stringify(selectedArray))
+    return clonedArray
+  }
+
   onSelectedObjectsChange = (selectedObjects) => {
     // hops
     var copiedObjects = this.makeCopies(selectedObjects) 
@@ -169,26 +202,25 @@ export default class NewScreen extends Component {
   }
 
   /*---------------------------------------*/
-  clearSelectObjects = (selectedItems) => {
-    // hops
-    td = this.state.tableData
+  clearSelectedHops = (hopItems) => {
+    td = this.state.hopData
     sh = this.state.selectedHops
     td.push.apply(td, sh)
     this.setState({
-      tableData: this.createUniqueKey(td),
+      hopData: this.createUniqueKey(td),
     }, ()=>this.setState({
-        selectedItems: [],
+        hopItems: [],
         selectedHops: [],
         }, () => this.setBorderProp())
     )
   }
+
   clearSelectedGrains = (selectedGrains) => {
-    // grains
     td = this.state.grainData
     sh = this.state.selectedGrains
     td.push.apply(td, sh)
     this.setState({
-      grainData: this.createUniqueKeyGrains(td),
+      grainData: this.createUniqueKey(td),
     }, ()=>this.setState({
         grainItems: [],
         selectedGrains: [],
@@ -197,13 +229,32 @@ export default class NewScreen extends Component {
   }
 
   /*---------------------------------------*/
+  deleteHandle(data, item) {
+    var d = [...data]
+    let idx = d.indexOf(item);
+    d.splice(idx, 1)
+    return d
+  }
+
+  deleteHop(item) {
+    var dh = this.deleteHandle(this.state.hopData, item)
+    this.setState({ hopData: dh
+    }, () => this.setBorderProp())
+  }
+
+  deleteGrain(item) {
+    var dh = this.deleteHandle(this.state.grainData, item)
+    this.setState({ grainData: dh
+    }, () => this.setGrainBorderProp())
+  }
+  /*
   deleteHop(item) {
     // hops
-    var tableDataTemp = [...this.state.tableData]
+    var tableDataTemp = [...this.state.hopData]
     let idx = tableDataTemp.indexOf(item);
     tableDataTemp.splice(idx, 1)
     this.setState({
-      tableData: tableDataTemp
+      hopData: tableDataTemp
     }, () => this.setBorderProp())
   }
   deleteGrain(item) {
@@ -215,11 +266,11 @@ export default class NewScreen extends Component {
       grainData: grainDataTemp
     }, () => this.setGrainBorderProp())
   }
-
+  */
   /*---------------------------------------*/
   setBorderProp() {
     // hops
-    if (this.state.tableData.length == 0) {
+    if (this.state.hopData.length == 0) {
       this.setState({
         hopBorder: false
       })
@@ -243,15 +294,49 @@ export default class NewScreen extends Component {
   }
 
   /*---------------------------------------*/
+  measureHandle(data, value, item, measure) {
+    var dat = [...data]
+    let idx = dat.indexOf(item);
+    dat[idx][measure] = Math.round(value)
+    return dat
+  }
+
+  setQuantity(value, item) {
+    var d = this.measureHandle(
+      this.state.hopData, value, item, 'quantity')
+    this.setState({hopData: d});
+  }
+
+  setTime(value, item) {
+    var d = this.measureHandle(
+      this.state.hopData, value, item, 'boiltime')
+    this.setState({hopData: d});
+  }
+
+  setGrainQuantity(value, item) {
+    var d = this.measureHandle(
+      this.state.grainData, value, item, 'quantity')
+    this.setState({grainData: d});
+  }
+
+  setGrainTime(value, item) {
+    var d = this.measureHandle(
+      this.state.grainData, value, item, 'boiltime')
+    this.setState({grainData: d});
+  }
+
+  
+  /*
   setQuantity(value, item) {
     // hops
-    var tableDataTemp = [...this.state.tableData]
+    var tableDataTemp = [...this.state.hopData]
     let idx = tableDataTemp.indexOf(item);
     tableDataTemp[idx]['quantity'] = Math.round(value)
     this.setState({
-      tableData: tableDataTemp
+      hopData: tableDataTemp
     });
   }
+
   setGrainQuantity(value, item) {
     // grains
     var grainDataTemp = [...this.state.grainData]
@@ -261,15 +346,14 @@ export default class NewScreen extends Component {
       grainData: grainDataTemp
     });
   }
-
-  /*---------------------------------------*/
+  
   setTime(value, item) {
     // hops
-    var tableDataTemp = [...this.state.tableData]
+    var tableDataTemp = [...this.state.hopData]
     let idx = tableDataTemp.indexOf(item);
     tableDataTemp[idx]['boiltime'] = Math.round(value)
     this.setState({
-      tableData: tableDataTemp
+      hopData: tableDataTemp
     });
   }
   setGrainTime(value, item) {
@@ -281,7 +365,7 @@ export default class NewScreen extends Component {
       grainData: grainDataTemp
     });
   }
-
+  */
   /*---------------------------------------*/
   renderHopCard(cardItem) {
     return (
@@ -347,7 +431,7 @@ export default class NewScreen extends Component {
                 this.setState({title})}}
               placeholder={this.state.title}/>
           </View>
-          <Text>{this.state.test.name}</Text>
+
 
           <View style={styles.viewSpacer}> 
             <DatePicker
@@ -415,85 +499,46 @@ export default class NewScreen extends Component {
                     placeholder="Select fermenter"
                     value={this.state.fermenterType} />
             </ModalSelector>
-
           </View>
-          <View style={{
-              flexDirection:'row',
-              alignItems: 'center',
-              marginLeft: 10,
-              marginRight: 10}}>
-            <View style={{
-                flex: 2, 
-                justifyContent: 'flex-end'}}>
-              <Text style={{
-                textAlign: 'center',
-                fontSize: 18}}>
+
+          <View style={styles.volumeBarContainer}>
+            <View style={styles.volumeBarContent}>
+                <Text style={styles.volumeBarText}>
                   Volume (litres)
                 </Text>
             </View>
-            <TouchableOpacity style={{
-                flex: 1,
-                borderRadius: 6,
-                borderWidth: 0,
-                backgroundColor: '#61A4FF',
-                marginLeft: 2,
-                marginRight: 2}}
-                onPress={() => this.setState({volume: 5})}
-              >
-              <Text style={{
-                textAlign: 'center',
-                fontSize: 25,
-                color:'white'}}>5</Text>
+
+            <TouchableOpacity style={styles.volumeBarMiniButton}
+                onPress={() => this.setState({volume: 5})}>
+              <Text style={styles.miniButtonText}>5</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
-                flex: 1,
-                borderRadius: 6,
-                borderWidth: 0,
-                backgroundColor: '#61A4ff',
-                marginLeft: 2,
-                marginRight: 2}}
-                onPress={() => this.setState({volume: 23})}
-              >
-              <Text style={{
-                textAlign: 'center',
-                fontSize: 25,
-                color:'white'}}>23</Text>
+
+            <TouchableOpacity style={styles.volumeBarMiniButton}
+                onPress={() => this.setState({volume: 23})}>
+              <Text style={styles.miniButtonText}>23</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{
-                flex: 1,
-                borderRadius: 6,
-                borderWidth: 0,
-                backgroundColor: '#61A4ff',
-                marginLeft: 2,
-                marginRight: 2}}
-                onPress={() => this.setState({volume: 60})}
-              >
-              <Text style={{
-                textAlign: 'center',
-                fontSize: 25,
-                color:'white'}}>60</Text>
+
+            <TouchableOpacity style={styles.volumeBarMiniButton}
+                onPress={() => this.setState({volume: 60})}>
+              <Text style={styles.miniButtonText}>60</Text>
             </TouchableOpacity>
-            <View style={{
-                  flex: 3,
-                  alignItems: 'stretch',
-                  justifyContent: 'center',
-                  marginLeft: 10,
-                  marginRight: 10}}>
+
+            <View style={styles.volumeSliderContent}>
                 <Slider
                   value={this.state.volume}
                   step={0.5}
                   minimumValue={1}
                   maximumValue={100}
-                  onValueChange={(value) => this.setState({volume: value}) }
+                  onValueChange={(value) => 
+                    this.setState({volume: value}) }
                 />
               </View>
-              <View style={{flex: 1}}>
-                <Text style={{
-                textAlign: 'center',
-                fontSize: 20}}>{this.state.volume}</Text>
+              <View style={styles.volumeSliderTextContainer}>
+                <Text style={styles.volumeSliderText}>
+                  {this.state.volume}
+                </Text>
             </View>
           </View>
-
 
           <MultiSelect
             hideTags
@@ -508,8 +553,8 @@ export default class NewScreen extends Component {
             ref={(component) => { this.multiSelect = component }}
             onSelectedItemsChange={this.onSelectedItemsChange}            
             onSelectedItemObjectsChange={this.onSelectedObjectsChange}
-            onConfirm={this.clearSelectObjects}
-            selectedItems={this.state.selectedItems}
+            onConfirm={this.clearSelectedHops}
+            selectedItems={this.state.hopItems}
             selectText="Select hops"
             showChips={false}
             searchInputPlaceholderText="Search Items..."
@@ -535,7 +580,7 @@ export default class NewScreen extends Component {
                 : {borderWidth: 0}]}>
             <FlatList
               style={{flex: 1}}
-              data={this.state.tableData}
+              data={this.state.hopData}
               renderItem={({item}) => this.renderHopCard(item)}
               keyExtractor={item => item.key}
             />

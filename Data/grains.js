@@ -312,64 +312,6 @@ export default [
         id: 518,
       }]
     },{
-      name: "Wheat, Rye, Other Grains",
-      id: 5,
-      data: [{
-        name: "Castle Crystal Wheat",
-        id: 501,
-      },{
-        name: "Castle Munich Wheat Malt 15",
-        id: 502,
-      },{
-        name: "Castle Munich Wheat Malt 25",
-        id: 503,
-      },{
-        name: "Castle Oat Malt",
-        id: 504,
-      },{
-        name: "Castle Rye Malt",
-        id: 505,
-      },{
-        name: "Castle Spelt",
-        id: 506,
-      },{
-        name: "Castle Wheat Blanc (Pale) Malt",
-        id: 507,
-      },{
-        name: "Crisp Flaked Maize",
-        id: 508,
-      },{
-        name: "Crisp Flaked Torrefied Oats",
-        id: 509,
-      },{
-        name: "Crisp Flaked Torrefied Rice",
-        id: 510,
-      },{
-        name: "Crisp Torrefied Wheat",
-        id: 511,
-      },{
-        name: "Joe White Crystal Wheat Malt",
-        id: 512,
-      },{
-        name: "Joe White Roasted Wheat Malt",
-        id: 513,
-      },{
-        name: "Joe White Wheat Malt",
-        id: 514,
-      },{
-        name: "Munton's Wheat Malt",
-        id: 515,
-      },{
-        name: "Simpsons Golden Naked Oats",
-        id: 516,
-      },{
-        name: "Weyermann Pale Wheat",
-        id: 517,
-      },{
-        name: "Weyermann Rye Malt",
-        id: 518,
-      }]
-    },{
         name: "Other Grains",
         id: 6,
         data: [{
