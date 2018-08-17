@@ -14,6 +14,7 @@ import hops from '../Data/hops';
 import grains from '../Data/grains';
 import Slider from "react-native-slider";
 import RecipeCard from "../Components/RecipeCard";
+import SubmitDataButton from '../Components/SubmitDataButton';
 
 export default class NewScreen extends Component {
   constructor(props) {
@@ -50,27 +51,6 @@ export default class NewScreen extends Component {
     })
   }
 
-  /*---------------------------------------*/
-  /*getExistingKeys(objs){
-    // hops
-    hopData = this.state.hopData
-    arrayOfKeys = []
-    for (var obj in hopData){
-      arrayOfKeys.push(obj['key'])
-    }
-    return arrayOfKeys
-  }
-
-  getExistingKeysGrains(objs){
-    // grains
-    grainData = this.state.grainData
-    arrayOfKeys = []
-    for (var obj in grainData){
-      arrayOfKeys.push(obj['key'])
-    }
-    return arrayOfKeys
-  }*/
-
   getExistingKeys(dat){
     arrayOfKeys = []
     for (var obj in dat){
@@ -79,69 +59,11 @@ export default class NewScreen extends Component {
     return arrayOfKeys
   }
 
-  /*---------------------------------------*/
   getRandomInt(multiplier){
     randInt = Math.floor((Math.random() * multiplier) + 1)
     return randInt.toString()
   }
 
-  /*---------------------------------------*/
-  /*
-  createUniqueKey(objs){
-    // hops
-    existingKeys = this.getExistingKeys(this.state.hopData);
-    tableArrayToReturn = [];
-    processedKeys = [];
-    
-    for (i=0; i<objs.length; i++){
-      isUnique = false;
-
-      while (isUnique == false){
-        randomKeyGen = this.getRandomInt(1000000);
-        
-        if (existingKeys.indexOf(randomKeyGen) == -1 &&
-            processedKeys.indexOf(randomKeyGen) == -1){
-          processedKeys.push(randomKeyGen);
-          tempData = objs[i];
-          tempData['key'] = randomKeyGen;
-          tableArrayToReturn.push(tempData);
-          isUnique = true;
-        } else {
-          processedKeys.push(randomKeyGen);
-        }
-      }
-    }
-    return tableArrayToReturn
-  }
-
-  createUniqueKeyGrains(objs){
-    // Grains
-    existingKeys = this.getExistingKeys(this.state.grainData);
-    tableArrayToReturn = [];
-    processedKeys = [];
-    
-    for (i=0; i<objs.length; i++){
-      isUnique = false;
-
-      while (isUnique == false){
-        randomKeyGen = this.getRandomInt(1000000);
-        
-        if (existingKeys.indexOf(randomKeyGen) == -1 &&
-            processedKeys.indexOf(randomKeyGen) == -1){
-          processedKeys.push(randomKeyGen);
-          tempData = objs[i];
-          tempData['key'] = randomKeyGen;
-          tableArrayToReturn.push(tempData);
-          isUnique = true;
-        } else {
-          processedKeys.push(randomKeyGen);
-        }
-        
-      }
-    }
-    return tableArrayToReturn
-  }
-  */
   createUniqueKey(dat){
     existingKeys = this.getExistingKeys(dat);
     tableArrayToReturn = [];
@@ -168,7 +90,6 @@ export default class NewScreen extends Component {
     return tableArrayToReturn
   }
 
-  /*---------------------------------------*/
   onSelectedItemsChange = (hopItems) => {
     // mandatory -hops
     this.setState({ hopItems });
@@ -179,7 +100,6 @@ export default class NewScreen extends Component {
     this.setState({ grainItems });
   }
 
-  /*---------------------------------------*/
   makeCopies(selectedArray){
     var clonedArray = JSON.parse(JSON.stringify(selectedArray))
     return clonedArray
@@ -201,7 +121,6 @@ export default class NewScreen extends Component {
     })
   }
 
-  /*---------------------------------------*/
   clearSelectedHops = (hopItems) => {
     td = this.state.hopData
     sh = this.state.selectedHops
@@ -228,7 +147,6 @@ export default class NewScreen extends Component {
     )
   }
 
-  /*---------------------------------------*/
   deleteHandle(data, item) {
     var d = [...data]
     let idx = d.indexOf(item);
@@ -247,27 +165,7 @@ export default class NewScreen extends Component {
     this.setState({ grainData: dh
     }, () => this.setGrainBorderProp())
   }
-  /*
-  deleteHop(item) {
-    // hops
-    var tableDataTemp = [...this.state.hopData]
-    let idx = tableDataTemp.indexOf(item);
-    tableDataTemp.splice(idx, 1)
-    this.setState({
-      hopData: tableDataTemp
-    }, () => this.setBorderProp())
-  }
-  deleteGrain(item) {
-    // grains
-    var grainDataTemp = [...this.state.grainData]
-    let idx = grainDataTemp.indexOf(item);
-    grainDataTemp.splice(idx, 1)
-    this.setState({
-      grainData: grainDataTemp
-    }, () => this.setGrainBorderProp())
-  }
-  */
-  /*---------------------------------------*/
+
   setBorderProp() {
     // hops
     if (this.state.hopData.length == 0) {
@@ -280,6 +178,7 @@ export default class NewScreen extends Component {
       })      
     }
   }
+
   setGrainBorderProp() {
     // hops
     if (this.state.grainData.length == 0) {
@@ -293,7 +192,6 @@ export default class NewScreen extends Component {
     }
   }
 
-  /*---------------------------------------*/
   measureHandle(data, value, item, measure) {
     var dat = [...data]
     let idx = dat.indexOf(item);
@@ -325,48 +223,6 @@ export default class NewScreen extends Component {
     this.setState({grainData: d});
   }
 
-  
-  /*
-  setQuantity(value, item) {
-    // hops
-    var tableDataTemp = [...this.state.hopData]
-    let idx = tableDataTemp.indexOf(item);
-    tableDataTemp[idx]['quantity'] = Math.round(value)
-    this.setState({
-      hopData: tableDataTemp
-    });
-  }
-
-  setGrainQuantity(value, item) {
-    // grains
-    var grainDataTemp = [...this.state.grainData]
-    let idx = grainDataTemp.indexOf(item);
-    grainDataTemp[idx]['quantity'] = Math.round(value)
-    this.setState({
-      grainData: grainDataTemp
-    });
-  }
-  
-  setTime(value, item) {
-    // hops
-    var tableDataTemp = [...this.state.hopData]
-    let idx = tableDataTemp.indexOf(item);
-    tableDataTemp[idx]['boiltime'] = Math.round(value)
-    this.setState({
-      hopData: tableDataTemp
-    });
-  }
-  setGrainTime(value, item) {
-    // grains
-    var grainDataTemp = [...this.state.grainData]
-    let idx = grainDataTemp.indexOf(item);
-    grainDataTemp[idx]['boiltime'] = Math.round(value)
-    this.setState({
-      grainData: grainDataTemp
-    });
-  }
-  */
-  /*---------------------------------------*/
   renderHopCard(cardItem) {
     return (
       <RecipeCard 
@@ -387,7 +243,21 @@ export default class NewScreen extends Component {
     )
   }
 
-  /*---------------------------------------*/
+  submitData(){
+    var data = {
+      date: this.state.date,
+      name: this.state.title,
+      class: this.state.group,
+      method: this.state.method,
+      type: this.state.beerType,
+      volume: this.state.volume,
+      fermenter: this.state.fermenterType,
+      steepgrains: this.state.grainData,
+      hops: this.state.hopData
+    }
+    console.log(data)
+  }
+
   render () {
     let index = 0;
     const beer = [
@@ -417,7 +287,6 @@ export default class NewScreen extends Component {
       { key: index++, label: 'Steel Bucket' }
     ];
 
-
     return (
 
       <ScrollView style={styles.container}>
@@ -431,7 +300,6 @@ export default class NewScreen extends Component {
                 this.setState({title})}}
               placeholder={this.state.title}/>
           </View>
-
 
           <View style={styles.viewSpacer}> 
             <DatePicker
@@ -454,7 +322,6 @@ export default class NewScreen extends Component {
             onDateChange={(date) => {
               this.setState({date: date});}}/>
           </View>  
-
 
           <View style={{alignItems:'center'}}>
           <ModalSelector
@@ -542,6 +409,52 @@ export default class NewScreen extends Component {
 
           <MultiSelect
             hideTags
+            items={grains}
+            uniqueKey="id"
+            subKey='data'
+            styles = {{
+              container: {
+                paddingHorizontal: 10
+              }
+            }}
+            ref={(comp) => { this.multiSelect = comp }}
+            onSelectedItemsChange={this.onSelectedGrainsChange}            
+            onSelectedItemObjectsChange={this.onSelectedGrainsObjectChange}
+            onConfirm={this.clearSelectedGrains}
+            selectedItems={this.state.grainItems}
+            selectText="Select steeping grains"
+            showChips={false}
+            searchInputPlaceholderText="Search Items..."
+            onChangeInput={ (text)=> console.log(text)}
+            altFontFamily="ProximaNova-Light"
+            showDropDowns={true}
+            readOnlyHeadings={true}
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#CCC"
+            selectedItemTextColor="#CCC"
+            selectedItemIconColor="#CCC"
+            itemTextColor="#000"
+            displayKey="name"
+            searchInputStyle={{ color: '#CCC' }}
+            submitButtonColor="#CCC"
+            submitButtonText="Submit"
+          />        
+          <View style={
+            [{backgroundColor: 'white'},
+              this.state.grainBorder
+                ? {borderWidth: 1} 
+                : {borderWidth: 0}]}>
+            <FlatList
+              style={{flex: 1}}
+              data={this.state.grainData}
+              renderItem={({item}) => this.renderGrainCard(item)}
+              keyExtractor={item => item.key}
+            />
+          </View>
+
+          <MultiSelect
+            hideTags
             items={hops}
             uniqueKey="id"
             subKey='data'
@@ -586,53 +499,9 @@ export default class NewScreen extends Component {
             />
           </View>
 
-          <MultiSelect
-            hideTags
-            items={grains}
-            uniqueKey="id"
-            subKey='data'
-            styles = {{
-              container: {
-                paddingHorizontal: 10
-              }
-            }}
-            ref={(comp) => { this.multiSelect = comp }}
-            onSelectedItemsChange={this.onSelectedGrainsChange}            
-            onSelectedItemObjectsChange={this.onSelectedGrainsObjectChange}
-            onConfirm={this.clearSelectedGrains}
-            selectedItems={this.state.grainItems}
-            selectText="Select grains"
-            showChips={false}
-            searchInputPlaceholderText="Search Items..."
-            onChangeInput={ (text)=> console.log(text)}
-            altFontFamily="ProximaNova-Light"
-            showDropDowns={true}
-            readOnlyHeadings={true}
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#CCC"
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="name"
-            searchInputStyle={{ color: '#CCC' }}
-            submitButtonColor="#CCC"
-            submitButtonText="Submit"
-          />        
-          <View style={
-            [{backgroundColor: 'white'},
-              this.state.grainBorder
-                ? {borderWidth: 1} 
-                : {borderWidth: 0}]}>
-            <FlatList
-              style={{flex: 1}}
-              data={this.state.grainData}
-              renderItem={({item}) => this.renderGrainCard(item)}
-              keyExtractor={item => item.key}
-            />
-          </View>
         </View>
 
+        <SubmitDataButton submitData={this.submitData.bind(this)} />
       </ScrollView>
     )
   }
