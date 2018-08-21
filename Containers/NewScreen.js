@@ -23,10 +23,10 @@ export default class NewScreen extends Component {
       date: '2018-01-01',
       title: 'Batch name',
       group: 'beer',
-      method: '',
-      beerType: '',
-      volume: 5,
-      fermenterType: '',
+      method: 'Extract',
+      beerType: 'Pale ale',
+      volume: 4.5,
+      fermenterType: 'Carboy',
       dataSource: [],
       modalVisible: false,
       //
@@ -38,8 +38,9 @@ export default class NewScreen extends Component {
       grainItems: [],
       grainData: [],
       selectedGrains: [],
-      grainBorder: false
+      grainBorder: false,
       //
+      IBU: 0
 
      };
   }
@@ -243,6 +244,73 @@ export default class NewScreen extends Component {
     )
   }
 
+  gramsToOunces(mass) {
+    return mass * 0.035274
+  }
+
+  ouncesToGrams(mass) {
+    return mass * 28.3495
+  }
+
+  gallonToLitre(volume) {
+    return volume * 3.78541
+  }
+
+  litreToGallon(volume) {
+    return volume * 0.264172
+  }
+
+  calculateAlphaAcidUnits(weight, alphaAcid) {
+    // weight in oz 
+    // alpha acid in whole number (e.g. 6.1)
+    return weight * alphaAcid
+  }
+
+  calculateGravity(weight, points, volume) {
+    // weight in llbs of extract
+    // points in whole numbers (e.g. 40)
+    // volumne in gallons
+    return (weight * points) / volume
+  }
+
+  calculateUtilisation(gravity, time) {
+    // gravity = original gravity
+    // time = integer representing minutes 
+    var fg = 1.65 * 0.000125^(gravity-1)
+    var ft = (1-Math.E^(-0.04 * time))/4.15
+    return fg * ft
+  }
+
+  calculateIBU(aau, utilisation, conversion, volume) {
+    // aau is alpha acid units 
+    // utilisation is a function of gravity and time
+    // coversion is 75 for imperial and 10 for metric
+    // volume is the recipe volume
+    return (aau * utilisation * conversion) / volume
+  }
+
+  recipeIBU() {
+    // if extract
+    // get total weight* and avg points*
+    // get recipe_volume*
+    // og* = calculateGravity(weight, points, recipe_volume)
+    //
+    // if hops
+    // empty_array*
+    // loop through hop data
+    // get boiltime*  
+    // util* = calculateUtilisation(og, boiltime)
+    // get hop quantity*
+    // get hop alpha acids*
+    // aau* = calculateAlphaAcidUnits(quantity, alphaAcids)
+    // ibu* = calculateIBU(aau, util, 75, recipe_volume)
+    // empty_array.append(ibu*) 
+    //
+    // recipeIBU = sum of all hop additions in empty_array
+    // return recipeIBU
+  }
+
+
   submitData(){
     var data = {
       date: this.state.date,
@@ -252,7 +320,7 @@ export default class NewScreen extends Component {
       type: this.state.beerType,
       volume: this.state.volume,
       fermenter: this.state.fermenterType,
-      steepgrains: this.state.grainData,
+      steeping_grains: this.state.grainData,
       hops: this.state.hopData
     }
     console.log(data)
@@ -371,13 +439,13 @@ export default class NewScreen extends Component {
           <View style={styles.volumeBarContainer}>
             <View style={styles.volumeBarContent}>
                 <Text style={styles.volumeBarText}>
-                  Volume (litres)
+                  Recipe volume
                 </Text>
             </View>
 
             <TouchableOpacity style={styles.volumeBarMiniButton}
-                onPress={() => this.setState({volume: 5})}>
-              <Text style={styles.miniButtonText}>5</Text>
+                onPress={() => this.setState({volume: 4.5})}>
+              <Text style={styles.miniButtonText}>4.5</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.volumeBarMiniButton}
