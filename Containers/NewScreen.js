@@ -12,6 +12,7 @@ import ModalSelector from 'react-native-modal-selector';
 import MultiSelect  from 'react-native-sectioned-multi-select';
 import hops from '../Data/hops';
 import grains from '../Data/grains';
+import extracts from '../Data/extracts';
 import Slider from "react-native-slider";
 import RecipeCard from "../Components/RecipeCard";
 import SubmitDataButton from '../Components/SubmitDataButton';
@@ -34,6 +35,11 @@ export default class NewScreen extends Component {
       hopData: [],
       selectedHops: [],
       hopBorder: false,
+      //
+      extractItems: [],
+      extractData: [],
+      selectedExtracts: [],
+      extractBorder: false,
       //
       grainItems: [],
       grainData: [],
@@ -101,10 +107,16 @@ export default class NewScreen extends Component {
     this.setState({ grainItems });
   }
 
+  onSelectedExtractsChange = (extractItems) => {
+    // mandatory - extracts
+    this.setState({ extractItems });
+  }
+
   makeCopies(selectedArray){
     var clonedArray = JSON.parse(JSON.stringify(selectedArray))
     return clonedArray
   }
+
 
   onSelectedObjectsChange = (selectedObjects) => {
     // hops
@@ -119,6 +131,14 @@ export default class NewScreen extends Component {
     var copiedGrainObjects = this.makeCopies(selectedGrainObjects) 
     this.setState({
       selectedGrains: copiedGrainObjects
+    })
+  }
+
+  onSelectedExtractsObjectChange = (selectedExtractObjects) => {
+    // extracts
+    var copiedExtractObjects = this.makeCopies(selectedExtractObjects) 
+    this.setState({
+      selectedExtracts: copiedExtractObjects
     })
   }
 
@@ -148,6 +168,19 @@ export default class NewScreen extends Component {
     )
   }
 
+  clearSelectedExtracts = (selectedExtracts) => {
+    td = this.state.extractData
+    sh = this.state.selectedExtracts
+    td.push.apply(td, sh)
+    this.setState({
+      extractData: this.createUniqueKey(td),
+    }, ()=>this.setState({
+        extractItems: [],
+        selectedExtracts: [],
+        }, () => this.setExtractBorderProp())
+    )
+  }
+
   deleteHandle(data, item) {
     var d = [...data]
     let idx = d.indexOf(item);
@@ -167,6 +200,12 @@ export default class NewScreen extends Component {
     }, () => this.setGrainBorderProp())
   }
 
+  deleteExtract(item) {
+    var dh = this.deleteHandle(this.state.extractData, item)
+    this.setState({ extractData: dh
+    }, () => this.setExtractBorderProp())
+  }
+
   setBorderProp() {
     // hops
     if (this.state.hopData.length == 0) {
@@ -181,7 +220,7 @@ export default class NewScreen extends Component {
   }
 
   setGrainBorderProp() {
-    // hops
+    // Grains
     if (this.state.grainData.length == 0) {
       this.setState({
         grainBorder: false
@@ -189,6 +228,19 @@ export default class NewScreen extends Component {
     } else {
       this.setState({
         grainBorder: true
+      })      
+    }
+  }
+
+  setExtractBorderProp() {
+    // Extracts
+    if (this.state.extractData.length == 0) {
+      this.setState({
+        extractBorder: false
+      })
+    } else {
+      this.setState({
+        extractBorder: true
       })      
     }
   }
@@ -224,13 +276,26 @@ export default class NewScreen extends Component {
     this.setState({grainData: d});
   }
 
+  setExtractQuantity(value, item) {
+    var d = this.measureHandle(
+      this.state.extractData, value, item, 'quantity')
+    this.setState({extractData: d});
+  }
+
+  setExtractTime(value, item) {
+    var d = this.measureHandle(
+      this.state.extractData, value, item, 'boiltime')
+    this.setState({extractData: d});
+  }
+
   renderHopCard(cardItem) {
     return (
       <RecipeCard 
         mark={cardItem} 
         deleteItem={this.deleteHop.bind(this)} 
         setQuantity={this.setQuantity.bind(this)} 
-        setTime={this.setTime.bind(this)}/>
+        setTime={this.setTime.bind(this)}
+        maxQuantity={this.hopToVolumeRatio(this.state.volume)}/>
     )
   }
 
@@ -240,7 +305,19 @@ export default class NewScreen extends Component {
         mark={cardItem} 
         deleteItem={this.deleteGrain.bind(this)} 
         setQuantity={this.setGrainQuantity.bind(this)} 
-        setTime={this.setGrainTime.bind(this)}/>
+        setTime={this.setGrainTime.bind(this)}
+        maxQuantity={this.grainToVolumeRatio(this.state.volume)}/>
+    )
+  }
+
+  renderExtractCard(cardItem) {
+    return (
+      <RecipeCard 
+        mark={cardItem} 
+        deleteItem={this.deleteExtract.bind(this)} 
+        setQuantity={this.setExtractQuantity.bind(this)} 
+        setTime={this.setExtractTime.bind(this)}
+        maxQuantity={this.maltToVolumeRatio(this.state.volume)}/>
     )
   }
 
@@ -258,6 +335,18 @@ export default class NewScreen extends Component {
 
   litreToGallon(volume) {
     return volume * 0.264172
+  }
+
+  maltToVolumeRatio(volume) {
+    return (volume/4.5) * 550
+  }
+
+  hopToVolumeRatio(volume) {
+    return (volume/4.5) * 20
+  }
+
+  grainToVolumeRatio(volume) {
+    return (volume/4.5) * 250
   }
 
   calculateAlphaAcidUnits(weight, alphaAcid) {
@@ -310,6 +399,11 @@ export default class NewScreen extends Component {
     // return recipeIBU
   }
 
+  formatData(mydictionary){
+    var dat = Object.values(mydictionary)
+    var arr = dat.join('\n')
+    return arr
+  }
 
   submitData(){
     var data = {
@@ -321,9 +415,11 @@ export default class NewScreen extends Component {
       volume: this.state.volume,
       fermenter: this.state.fermenterType,
       steeping_grains: this.state.grainData,
-      hops: this.state.hopData
+      hops: this.state.hopData,
+      ibu: this.state.IBU
     }
-    console.log(data)
+    //console.log(data)
+    alert(this.formatData(data))
   }
 
   render () {
@@ -449,13 +545,13 @@ export default class NewScreen extends Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.volumeBarMiniButton}
-                onPress={() => this.setState({volume: 23})}>
-              <Text style={styles.miniButtonText}>23</Text>
+                onPress={() => this.setState({volume: 10})}>
+              <Text style={styles.miniButtonText}>10</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.volumeBarMiniButton}
-                onPress={() => this.setState({volume: 60})}>
-              <Text style={styles.miniButtonText}>60</Text>
+                onPress={() => this.setState({volume: 23})}>
+              <Text style={styles.miniButtonText}>23</Text>
             </TouchableOpacity>
 
             <View style={styles.volumeSliderContent}>
@@ -520,6 +616,53 @@ export default class NewScreen extends Component {
               keyExtractor={item => item.key}
             />
           </View>
+
+          <MultiSelect
+            hideTags
+            items={extracts}
+            uniqueKey="id"
+            subKey='data'
+            styles = {{
+              container: {
+                paddingHorizontal: 10
+              }
+            }}
+            ref={(comp) => { this.multiSelect = comp }}
+            onSelectedItemsChange={this.onSelectedExtractsChange}            
+            onSelectedItemObjectsChange={this.onSelectedExtractsObjectChange}
+            onConfirm={this.clearSelectedExtracts}
+            selectedItems={this.state.extractItems}
+            selectText="Select malt extract"
+            showChips={false}
+            searchInputPlaceholderText="Search Items..."
+            onChangeInput={ (text)=> console.log(text)}
+            altFontFamily="ProximaNova-Light"
+            showDropDowns={true}
+            readOnlyHeadings={true}
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#CCC"
+            selectedItemTextColor="#CCC"
+            selectedItemIconColor="#CCC"
+            itemTextColor="#000"
+            displayKey="name"
+            searchInputStyle={{ color: '#CCC' }}
+            submitButtonColor="#CCC"
+            submitButtonText="Submit"
+          />        
+          <View style={
+            [{backgroundColor: 'white'},
+              this.state.extractBorder
+                ? {borderWidth: 1} 
+                : {borderWidth: 0}]}>
+            <FlatList
+              style={{flex: 1}}
+              data={this.state.extractData}
+              renderItem={({item}) => this.renderExtractCard(item)}
+              keyExtractor={item => item.key}
+            />
+          </View>
+
 
           <MultiSelect
             hideTags

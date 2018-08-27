@@ -13,7 +13,8 @@ export default class RecipeCard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            recipe: this.props.mark
+            recipe: this.props.mark,
+            maxQuantity: this.props.maxQuantity
         }
     } 
 
@@ -46,7 +47,7 @@ export default class RecipeCard extends Component {
                       value={this.state.recipe.quantity}
                       step={1}
                       minimumValue={0}
-                      maximumValue={40}
+                      maximumValue={this.state.maxQuantity}
                       onValueChange={(value) => 
                         this.props.setQuantity(
                           value, this.state.recipe) } />
@@ -66,7 +67,7 @@ export default class RecipeCard extends Component {
                       value={this.state.recipe.boiltime}
                       step={1}
                       minimumValue={0}
-                      maximumValue={80}
+                      maximumValue={60}
                       onValueChange={(value) => 
                         this.props.setTime(
                           value, this.state.recipe) } />
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
       marginRight: 10
     },
     measureBlockIcon: {
-      flex: 0.5,
+      flex: 1,
       justifyContent: 'center'
     },
     measureBlockSlider: {
