@@ -380,24 +380,39 @@ export default class NewScreen extends Component {
 
   recipeIBU() {
     // if extract
-    // get total weight* and avg points*
-    // get recipe_volume*
-    // og* = calculateGravity(weight, points, recipe_volume)
-    //
-    // if hops
-    // empty_array*
-    // loop through hop data
-    // get boiltime*  
-    // util* = calculateUtilisation(og, boiltime)
-    // get hop quantity*
-    // get hop alpha acids*
-    // aau* = calculateAlphaAcidUnits(quantity, alphaAcids)
-    // ibu* = calculateIBU(aau, util, 75, recipe_volume)
-    // empty_array.append(ibu*) 
-    //
-    // recipeIBU = sum of all hop additions in empty_array
-    // return recipeIBU
-  }
+    try {
+      var edat = Object.keys(this.state.extractData).length
+      var hdat = Object.keys(this.state.hopData).length
+      if (edat > 0 && hdat > 0) {
+        // get total weight* 
+        // get avg points*
+        // get recipe_volume*
+        // og* = calculateGravity(weight, points, recipe_volume)
+        //
+        //
+        // if hops
+        // empty_array*
+        // loop through hop data
+        // get boiltime*  
+        // util* = calculateUtilisation(og, boiltime)
+        // get hop quantity*
+        // get hop alpha acids*
+        // aau* = calculateAlphaAcidUnits(quantity, alphaAcids)
+        // ibu* = calculateIBU(aau, util, 75, recipe_volume)
+        // empty_array.append(ibu*) 
+        //
+        // recipeIBU = sum of all hop additions in empty_array
+        // return recipeIBU
+        this.setState({
+          IBU: 100
+        })
+      } 
+    } catch(err) {
+        console.log(err.message);
+    }
+  } 
+
+  
 
   formatData(mydictionary){
     var dat = Object.values(mydictionary)
@@ -406,6 +421,7 @@ export default class NewScreen extends Component {
   }
 
   submitData(){
+    this.recipeIBU()
     var data = {
       date: this.state.date,
       name: this.state.title,
@@ -415,10 +431,11 @@ export default class NewScreen extends Component {
       volume: this.state.volume,
       fermenter: this.state.fermenterType,
       steeping_grains: this.state.grainData,
+      extract: this.state.extractData,
       hops: this.state.hopData,
       ibu: this.state.IBU
     }
-    //console.log(data)
+    console.log(data)
     alert(this.formatData(data))
   }
 
