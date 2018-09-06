@@ -325,6 +325,10 @@ export default class NewScreen extends Component {
     return mass * 0.035274
   }
 
+  gramsToPounds(mass) {
+    return mass * 0.00220462
+  }
+
   ouncesToGrams(mass) {
     return mass * 28.3495
   }
@@ -358,7 +362,7 @@ export default class NewScreen extends Component {
   calculateGravity(weight, points, volume) {
     // weight in llbs of extract
     // points in whole numbers (e.g. 40)
-    // volumne in gallons
+    // volume in gallons
     return (weight * points) / volume
   }
 
@@ -381,30 +385,38 @@ export default class NewScreen extends Component {
   recipeIBU() {
     // if extract
     try {
-      var edat = Object.keys(this.state.extractData).length
-      var hdat = Object.keys(this.state.hopData).length
+      var edat = this.state.extractData.length
+      var hdat = this.state.hopData.length
       if (edat > 0 && hdat > 0) {
-        // get total weight* 
-        // get avg points*
-        // get recipe_volume*
-        // og* = calculateGravity(weight, points, recipe_volume)
-        //
-        //
-        // if hops
-        // empty_array*
-        // loop through hop data
-        // get boiltime*  
-        // util* = calculateUtilisation(og, boiltime)
-        // get hop quantity*
-        // get hop alpha acids*
-        // aau* = calculateAlphaAcidUnits(quantity, alphaAcids)
-        // ibu* = calculateIBU(aau, util, 75, recipe_volume)
-        // empty_array.append(ibu*) 
-        //
-        // recipeIBU = sum of all hop additions in empty_array
+        // get total weight 
+        var weight = 0;
+        this.state.extractData.forEach(function(element) {
+          weight = weight + element.quantity;
+        });
+        weight = this.gramsToPounds(weight)
+        // get avg points
+        var points = 37 // eventually avg => dark=40 and light=35
+        // get recipe_volume
+        var recipe_volume = this.litreToGallon(this.state.volume)
+        var og = this.calculateGravity(weight, points, recipe_volume)
+        var hoplist = []
+        // calculate bitter units
+        //for (i=0; i<this.state.hopData.length; i++) {
+        this.state.hopData.forEach(function(hops) {
+          console.log(hops.quantity)
+          var hquan = this.gramsToOunces(hops.quantity)  
+          var htime = hops.boiltime
+          var haa = hops.alpha
+          var aau = this.calculateAlphaAcidUnits(hquan, haa)
+          var util = this.calculateUtilisation(og, htime)
+          var ibu = this.calculateIBU(aau, util, 75, recipe_volume)
+          hoplist.push(ibu)
+        });
+        const arrSum = arr => arr.reduce((a,b) => a + b, 0)
+        var total_ibu = arrSum(hoplist)
         // return recipeIBU
         this.setState({
-          IBU: 100
+          IBU: total_ibu
         })
       } 
     } catch(err) {
@@ -412,7 +424,6 @@ export default class NewScreen extends Component {
     }
   } 
 
-  
 
   formatData(mydictionary){
     var dat = Object.values(mydictionary)
@@ -436,7 +447,7 @@ export default class NewScreen extends Component {
       ibu: this.state.IBU
     }
     console.log(data)
-    alert(this.formatData(data))
+    //alert(this.formatData(data))
   }
 
   render () {
