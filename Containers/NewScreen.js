@@ -363,14 +363,14 @@ export default class NewScreen extends Component {
     // weight in llbs of extract
     // points in whole numbers (e.g. 40)
     // volume in gallons
-    return (weight * points) / volume
+    return 1 + ((weight * points / volume) /1000)
   }
 
   calculateUtilisation(gravity, time) {
     // gravity = original gravity
     // time = integer representing minutes 
-    var fg = 1.65 * 0.000125^(gravity-1)
-    var ft = (1-Math.E^(-0.04 * time))/4.15
+    var fg = 1.65 * Math.pow(0.000125, gravity-1)
+    var ft = (1-Math.pow(Math.E, (-0.04 * time))) / 4.15
     return fg * ft
   }
 
@@ -393,27 +393,39 @@ export default class NewScreen extends Component {
         this.state.extractData.forEach(function(element) {
           weight = weight + element.quantity;
         });
+        console.log('Weight in kgs', weight)
         weight = this.gramsToPounds(weight)
+        console.log('Weight in pounds', weight)
         // get avg points
         var points = 37 // eventually avg => dark=40 and light=35
         // get recipe_volume
         var recipe_volume = this.litreToGallon(this.state.volume)
+        console.log('Recipe vol in gallons', recipe_volume)
         var og = this.calculateGravity(weight, points, recipe_volume)
+        console.log('og', og)
         var hoplist = []
         // calculate bitter units
+        var self = this;
         //for (i=0; i<this.state.hopData.length; i++) {
         this.state.hopData.forEach(function(hops) {
-          console.log(hops.quantity)
-          var hquan = this.gramsToOunces(hops.quantity)  
+          console.log('Hop quantity', hops.quantity)
+          var hquan = self.gramsToOunces(hops.quantity)
+          console.log('Hops in ounces', hquan)  
           var htime = hops.boiltime
+          console.log('Hop boil time', htime)
           var haa = hops.alpha
-          var aau = this.calculateAlphaAcidUnits(hquan, haa)
-          var util = this.calculateUtilisation(og, htime)
-          var ibu = this.calculateIBU(aau, util, 75, recipe_volume)
+          console.log('Hop alpha', haa)
+          var aau = self.calculateAlphaAcidUnits(hquan, haa)
+          console.log('Alpha acids', aau)
+          var util = self.calculateUtilisation(og, htime)
+          console.log('Utilisation', util)
+          var ibu = self.calculateIBU(aau, util, 75, recipe_volume)
+          console.log(ibu)
           hoplist.push(ibu)
         });
         const arrSum = arr => arr.reduce((a,b) => a + b, 0)
         var total_ibu = arrSum(hoplist)
+        console.log('Total IBU:', total_ibu)
         // return recipeIBU
         this.setState({
           IBU: total_ibu
