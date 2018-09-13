@@ -255,37 +255,37 @@ export default class NewScreen extends Component {
   setQuantity(value, item) {
     var d = this.measureHandle(
       this.state.hopData, value, item, 'quantity')
-    this.setState({hopData: d});
+    this.setState({hopData: d}, ()=> this.recipeIBU());
   }
 
   setTime(value, item) {
     var d = this.measureHandle(
       this.state.hopData, value, item, 'boiltime')
-    this.setState({hopData: d});
+    this.setState({hopData: d}, ()=> this.recipeIBU());
   }
 
   setGrainQuantity(value, item) {
     var d = this.measureHandle(
       this.state.grainData, value, item, 'quantity')
-    this.setState({grainData: d});
+    this.setState({grainData: d}, ()=> this.recipeIBU());
   }
 
   setGrainTime(value, item) {
     var d = this.measureHandle(
       this.state.grainData, value, item, 'boiltime')
-    this.setState({grainData: d});
+    this.setState({grainData: d}, ()=> this.recipeIBU());
   }
 
   setExtractQuantity(value, item) {
     var d = this.measureHandle(
       this.state.extractData, value, item, 'quantity')
-    this.setState({extractData: d});
+    this.setState({extractData: d}, ()=> this.recipeIBU());
   }
 
   setExtractTime(value, item) {
     var d = this.measureHandle(
       this.state.extractData, value, item, 'boiltime')
-    this.setState({extractData: d});
+    this.setState({extractData: d}, ()=> this.recipeIBU());
   }
 
   renderHopCard(cardItem) {
@@ -424,7 +424,7 @@ export default class NewScreen extends Component {
           hoplist.push(ibu)
         });
         const arrSum = arr => arr.reduce((a,b) => a + b, 0)
-        var total_ibu = arrSum(hoplist)
+        var total_ibu = Math.round(arrSum(hoplist), 2)
         console.log('Total IBU:', total_ibu)
         // return recipeIBU
         this.setState({
@@ -444,7 +444,6 @@ export default class NewScreen extends Component {
   }
 
   submitData(){
-    this.recipeIBU()
     var data = {
       date: this.state.date,
       name: this.state.title,
@@ -610,6 +609,18 @@ export default class NewScreen extends Component {
                 </Text>
             </View>
           </View>
+                    
+
+          <View style={styles.ibuContainer}>
+            <View style={styles.ibu}>
+                <Text style={styles.ibuText}>
+                    {this.state.IBU}
+                </Text>
+                <Text style={styles.ibuText}>
+                    IBU
+                </Text>
+            </View>
+          </View>
 
           <MultiSelect
             hideTags
@@ -621,7 +632,7 @@ export default class NewScreen extends Component {
                 paddingHorizontal: 10
               }
             }}
-            ref={(comp) => { this.multiSelect = comp }}
+            //ref={(comp) => { this.multiSelect = comp }}
             onSelectedItemsChange={this.onSelectedGrainsChange}            
             onSelectedItemObjectsChange={this.onSelectedGrainsObjectChange}
             onConfirm={this.clearSelectedGrains}
@@ -667,7 +678,7 @@ export default class NewScreen extends Component {
                 paddingHorizontal: 10
               }
             }}
-            ref={(comp) => { this.multiSelect = comp }}
+            //ref={(comp) => { this.multiSelect = comp }}
             onSelectedItemsChange={this.onSelectedExtractsChange}            
             onSelectedItemObjectsChange={this.onSelectedExtractsObjectChange}
             onConfirm={this.clearSelectedExtracts}
@@ -714,7 +725,7 @@ export default class NewScreen extends Component {
                 paddingHorizontal: 10
               }
             }}
-            ref={(component) => { this.multiSelect = component }}
+            //ref={(component) => { this.multiSelect = component }}
             onSelectedItemsChange={this.onSelectedItemsChange}            
             onSelectedItemObjectsChange={this.onSelectedObjectsChange}
             onConfirm={this.clearSelectedHops}
@@ -744,6 +755,7 @@ export default class NewScreen extends Component {
                 : {borderWidth: 0}]}>
             <FlatList
               style={{flex: 1}}
+              removeClippedSubviews={false}
               data={this.state.hopData}
               renderItem={({item}) => this.renderHopCard(item)}
               keyExtractor={item => item.key}

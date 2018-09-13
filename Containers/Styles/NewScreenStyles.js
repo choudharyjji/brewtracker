@@ -91,5 +91,23 @@ export default StyleSheet.create({
   volumeSliderText: {
     textAlign: 'center',
     fontSize: 20
+  },
+  ibuContainer: {
+    flex: 1, 
+    flexDirection:'row', 
+    alignItems: 'stretch',
+    justifyContent: 'center'
+  },
+  ibu: { 
+    width: 100, 
+    height: 100, 
+    backgroundColor: '#78B7BB',  
+    borderRadius: 50,
+    justifyContent: 'center',
+  },
+  ibuText: {
+    textAlign: 'center',
+    fontSize: 25,
+    alignItems:'center'
   }
 })
