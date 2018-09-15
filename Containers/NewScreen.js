@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity, 
-  FlatList,
+  SectionList,
   ScrollView } from 'react-native'
 import styles from './Styles/NewScreenStyles';
 import DatePicker from 'react-native-datepicker';
@@ -655,18 +655,6 @@ export default class NewScreen extends Component {
             submitButtonColor="#CCC"
             submitButtonText="Submit"
           />        
-          <View style={
-            [{backgroundColor: 'white'},
-              this.state.grainBorder
-                ? {borderWidth: 1} 
-                : {borderWidth: 0}]}>
-            <FlatList
-              style={{flex: 1}}
-              data={this.state.grainData}
-              renderItem={({item}) => this.renderGrainCard(item)}
-              keyExtractor={item => item.key}
-            />
-          </View>
 
           <MultiSelect
             hideTags
@@ -701,18 +689,6 @@ export default class NewScreen extends Component {
             submitButtonColor="#CCC"
             submitButtonText="Submit"
           />        
-          <View style={
-            [{backgroundColor: 'white'},
-              this.state.extractBorder
-                ? {borderWidth: 1} 
-                : {borderWidth: 0}]}>
-            <FlatList
-              style={{flex: 1}}
-              data={this.state.extractData}
-              renderItem={({item}) => this.renderExtractCard(item)}
-              keyExtractor={item => item.key}
-            />
-          </View>
 
 
           <MultiSelect
@@ -748,21 +724,24 @@ export default class NewScreen extends Component {
             submitButtonColor="#CCC"
             submitButtonText="Submit"
           />        
-          <View style={
-            [{backgroundColor: 'white'},
-              this.state.hopBorder
-                ? {borderWidth: 1} 
-                : {borderWidth: 0}]}>
-            <FlatList
-              style={{flex: 1}}
-              removeClippedSubviews={false}
-              data={this.state.hopData}
-              renderItem={({item}) => this.renderHopCard(item)}
-              keyExtractor={item => item.key}
-            />
-          </View>
-
+          
         </View>
+        <SectionList
+            renderSectionHeader={({ section: {title} }) => 
+              <Text style={{fontWeight: 'bold'}}>{title}</Text>}
+            sections={[
+              { title: 'Steeping Grain', data: this.state.grainData,
+                renderItem: ({item, index, section: {title, data}}) => this.renderGrainCard(item)
+              },
+              { title: 'Malt Extract', data: this.state.extractData,
+                renderItem: ({item, index, section: {title, data}}) => this.renderExtractCard(item)
+              },
+              { title: 'Hops', data: this.state.hopData,
+                renderItem: ({item, index, section: {title, data}}) => this.renderHopCard(item)
+              }
+            ]}
+            keyExtractor={(item, index) => item.key + index}
+          />
 
         <SubmitDataButton submitData={this.submitData.bind(this)} />
       </ScrollView>
