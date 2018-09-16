@@ -16,6 +16,7 @@ import extracts from '../Data/extracts';
 import Slider from "react-native-slider";
 import RecipeCard from "../Components/RecipeCard";
 import SubmitDataButton from '../Components/SubmitDataButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class NewScreen extends Component {
   constructor(props) {
@@ -491,7 +492,6 @@ export default class NewScreen extends Component {
     ];
 
     return (
-
       <ScrollView style={styles.container}>
 
         <View style={{flex: 1}}>
@@ -611,137 +611,158 @@ export default class NewScreen extends Component {
           </View>
                     
 
-          <View style={styles.ibuContainer}>
-            <View style={styles.ibu}>
-                <Text style={styles.ibuText}>
-                    {this.state.IBU}
-                </Text>
-                <Text style={styles.ibuText}>
-                    IBU
-                </Text>
+          <View 
+            style={{
+              flex: 1,
+              flexDirection: 'row', 
+              alignItems: 'stretch', 
+              justifyContent: 'center'
+            }}>
+            <View>
+              <MultiSelect
+                hideTags
+                items={grains}
+                uniqueKey="id"
+                subKey='data'
+                styles = {{
+                  container: {
+                    paddingHorizontal: 10
+                  }
+                }}
+                //ref={(comp) => { this.multiSelect = comp }}
+                onSelectedItemsChange={this.onSelectedGrainsChange}            
+                onSelectedItemObjectsChange={this.onSelectedGrainsObjectChange}
+                onConfirm={this.clearSelectedGrains}
+                selectedItems={this.state.grainItems}
+                selectText=""//"Select steeping grains"
+                showChips={false}
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={ (text)=> console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                showDropDowns={true}
+                readOnlyHeadings={true}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC' }}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+                selectToggleIconComponent={<Icon name="pagelines" size={50} color="black" />}
+              /> 
             </View>
+            <View>   
+              <MultiSelect
+                hideTags
+                items={extracts}
+                uniqueKey="id"
+                subKey='data'
+                styles = {{
+                  container: {
+                    paddingHorizontal: 10
+                  }
+                }}
+                //ref={(comp) => { this.multiSelect = comp }}
+                onSelectedItemsChange={this.onSelectedExtractsChange}            
+                onSelectedItemObjectsChange={this.onSelectedExtractsObjectChange}
+                onConfirm={this.clearSelectedExtracts}
+                selectedItems={this.state.extractItems}
+                selectText=""//"Select malt extract"
+                showChips={false}
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={ (text)=> console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                showDropDowns={true}
+                readOnlyHeadings={true}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC' }}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+                selectToggleIconComponent={<Icon name="cogs" size={50} color="black" />}
+              />        
+            </View>
+            <View>
+              <MultiSelect
+                hideTags
+                items={hops}
+                uniqueKey="id"
+                subKey='data'
+                styles = {{
+                  container: {
+                    paddingHorizontal: 10
+                  }
+                }}
+                //ref={(component) => { this.multiSelect = component }}
+                onSelectedItemsChange={this.onSelectedItemsChange}            
+                onSelectedItemObjectsChange={this.onSelectedObjectsChange}
+                onConfirm={this.clearSelectedHops}
+                selectedItems={this.state.hopItems}
+                selectText=""//"Select hops"
+                showChips={false}
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={ (text)=> console.log(text)}
+                altFontFamily="ProximaNova-Light"
+                showDropDowns={true}
+                readOnlyHeadings={true}
+                tagRemoveIconColor="#CCC"
+                tagBorderColor="#CCC"
+                tagTextColor="#CCC"
+                selectedItemTextColor="#CCC"
+                selectedItemIconColor="#CCC"
+                itemTextColor="#000"
+                displayKey="name"
+                searchInputStyle={{ color: '#CCC' }}
+                submitButtonColor="#CCC"
+                submitButtonText="Submit"
+                selectToggleIconComponent={<Icon name="cubes" size={50} color="black" />}
+              />   
+            </View>     
           </View>
-
-          <MultiSelect
-            hideTags
-            items={grains}
-            uniqueKey="id"
-            subKey='data'
-            styles = {{
-              container: {
-                paddingHorizontal: 10
-              }
-            }}
-            //ref={(comp) => { this.multiSelect = comp }}
-            onSelectedItemsChange={this.onSelectedGrainsChange}            
-            onSelectedItemObjectsChange={this.onSelectedGrainsObjectChange}
-            onConfirm={this.clearSelectedGrains}
-            selectedItems={this.state.grainItems}
-            selectText="Select steeping grains"
-            showChips={false}
-            searchInputPlaceholderText="Search Items..."
-            onChangeInput={ (text)=> console.log(text)}
-            altFontFamily="ProximaNova-Light"
-            showDropDowns={true}
-            readOnlyHeadings={true}
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#CCC"
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="name"
-            searchInputStyle={{ color: '#CCC' }}
-            submitButtonColor="#CCC"
-            submitButtonText="Submit"
-          />        
-
-          <MultiSelect
-            hideTags
-            items={extracts}
-            uniqueKey="id"
-            subKey='data'
-            styles = {{
-              container: {
-                paddingHorizontal: 10
-              }
-            }}
-            //ref={(comp) => { this.multiSelect = comp }}
-            onSelectedItemsChange={this.onSelectedExtractsChange}            
-            onSelectedItemObjectsChange={this.onSelectedExtractsObjectChange}
-            onConfirm={this.clearSelectedExtracts}
-            selectedItems={this.state.extractItems}
-            selectText="Select malt extract"
-            showChips={false}
-            searchInputPlaceholderText="Search Items..."
-            onChangeInput={ (text)=> console.log(text)}
-            altFontFamily="ProximaNova-Light"
-            showDropDowns={true}
-            readOnlyHeadings={true}
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#CCC"
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="name"
-            searchInputStyle={{ color: '#CCC' }}
-            submitButtonColor="#CCC"
-            submitButtonText="Submit"
-          />        
-
-
-          <MultiSelect
-            hideTags
-            items={hops}
-            uniqueKey="id"
-            subKey='data'
-            styles = {{
-              container: {
-                paddingHorizontal: 10
-              }
-            }}
-            //ref={(component) => { this.multiSelect = component }}
-            onSelectedItemsChange={this.onSelectedItemsChange}            
-            onSelectedItemObjectsChange={this.onSelectedObjectsChange}
-            onConfirm={this.clearSelectedHops}
-            selectedItems={this.state.hopItems}
-            selectText="Select hops"
-            showChips={false}
-            searchInputPlaceholderText="Search Items..."
-            onChangeInput={ (text)=> console.log(text)}
-            altFontFamily="ProximaNova-Light"
-            showDropDowns={true}
-            readOnlyHeadings={true}
-            tagRemoveIconColor="#CCC"
-            tagBorderColor="#CCC"
-            tagTextColor="#CCC"
-            selectedItemTextColor="#CCC"
-            selectedItemIconColor="#CCC"
-            itemTextColor="#000"
-            displayKey="name"
-            searchInputStyle={{ color: '#CCC' }}
-            submitButtonColor="#CCC"
-            submitButtonText="Submit"
-          />        
-          
         </View>
-        <SectionList
-            renderSectionHeader={({ section: {title} }) => 
-              <Text style={{fontWeight: 'bold'}}>{title}</Text>}
-            sections={[
-              { title: 'Steeping Grain', data: this.state.grainData,
-                renderItem: ({item, index, section: {title, data}}) => this.renderGrainCard(item)
-              },
-              { title: 'Malt Extract', data: this.state.extractData,
-                renderItem: ({item, index, section: {title, data}}) => this.renderExtractCard(item)
-              },
-              { title: 'Hops', data: this.state.hopData,
-                renderItem: ({item, index, section: {title, data}}) => this.renderHopCard(item)
-              }
-            ]}
-            keyExtractor={(item, index) => item.key + index}
-          />
+        
+        <View style={{margin:10}}>
+          <Text style={{fontSize: 25, fontWeight: 'bold'}}>Recipe</Text>
+          <SectionList
+              
+              renderSectionHeader={({ section: {title} }) => 
+                <Text style={{fontWeight: 'bold'}}>{title}</Text>}
+              sections={[
+                { title: 'Steeping Grain', data: this.state.grainData,
+                  renderItem: ({item, index, 
+                    section: {title, data}}) => this.renderGrainCard(item)
+                },
+                { title: 'Malt Extract', data: this.state.extractData,
+                  renderItem: ({item, index, 
+                    section: {title, data}}) => this.renderExtractCard(item)
+                },
+                { title: 'Hops', data: this.state.hopData,
+                  renderItem: ({item, index, 
+                    section: {title, data}}) => this.renderHopCard(item)
+                }
+              ]}
+              keyExtractor={(item, index) => item.key + index}
+            />
+        </View>
+
+        <View style={styles.ibuContainer}>
+          <View style={styles.ibu}>
+              <Text style={styles.ibuText}>
+                  {this.state.IBU}
+              </Text>
+              <Text style={styles.ibuText}>
+                  IBU
+              </Text>
+          </View>
+        </View>
 
         <SubmitDataButton submitData={this.submitData.bind(this)} />
       </ScrollView>
