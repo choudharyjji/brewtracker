@@ -22,7 +22,7 @@ export default StyleSheet.create({
   },
   viewSpacer: {
     alignItems:'center',
-    paddingBottom: 20
+    //paddingBottom: 20
   },
   tablecontainer: { 
     flex: 1, 
@@ -92,22 +92,16 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 20
   },
-  ibuContainer: {
-    flex: 1, 
-    flexDirection:'row', 
-    alignItems: 'stretch',
-    justifyContent: 'center'
-  },
-  ibu: { 
-    width: 100, 
-    height: 100, 
-    backgroundColor: '#78B7BB',  
-    borderRadius: 50,
-    justifyContent: 'center',
-  },
-  ibuText: {
-    textAlign: 'center',
-    fontSize: 25,
-    alignItems:'center'
-  }
+  //ibu: { 
+    //width: 50, 
+    //height: 50, 
+    //backgroundColor: '#78B7BB',  
+    //borderRadius: 25,
+    //justifyContent: 'center',
+  //},
+  //ibuText: {
+    //textAlign: 'center',
+    //fontSize: 15,
+    //alignItems:'center'
+  //}
 })

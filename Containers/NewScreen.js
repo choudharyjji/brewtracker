@@ -27,7 +27,7 @@ export default class NewScreen extends Component {
       group: 'beer',
       method: 'Extract',
       beerType: 'Pale ale',
-      volume: 4.5,
+      volume: 5,
       fermenterType: 'Carboy',
       dataSource: [],
       modalVisible: false,
@@ -492,10 +492,31 @@ export default class NewScreen extends Component {
     ];
 
     return (
+      <View style={{flex: 1}}>
+
+        <View style={{flex: 0.075,
+            margin: 5 }}>
+          <View style={{flex: 1,
+            flexDirection:'row', 
+            backgroundColor: '#78B7BB', 
+            alignItems: 'stretch',
+            justifyContent: 'center'}}>
+            <View style={{flex: 5, justifyContent: 'center'}}>
+              <Text style={{fontSize: 25}}>New Recipe</Text>
+            </View>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={{fontSize: 20, textAlign: 'center'}}>
+                { this.state.IBU }
+              </Text>
+              <Text style={{textAlign: 'center'}}>IBU</Text>
+            </View>
+          </View>
+        </View>
+
       <ScrollView style={styles.container}>
 
         <View style={{flex: 1}}>
-          <View style={{paddingBottom: 20}}>
+          <View>
             <TextInput
               underlineColorAndroid='transparent'
               style={styles.textInput}
@@ -579,8 +600,8 @@ export default class NewScreen extends Component {
             </View>
 
             <TouchableOpacity style={styles.volumeBarMiniButton}
-                onPress={() => this.setState({volume: 4.5})}>
-              <Text style={styles.miniButtonText}>4.5</Text>
+                onPress={() => this.setState({volume: 5})}>
+              <Text style={styles.miniButtonText}>5</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.volumeBarMiniButton}
@@ -614,11 +635,9 @@ export default class NewScreen extends Component {
           <View 
             style={{
               flex: 1,
-              flexDirection: 'row', 
-              alignItems: 'stretch', 
-              justifyContent: 'center'
+              flexDirection: 'row'
             }}>
-            <View>
+            <View style={{ flex: 0 }}>
               <MultiSelect
                 hideTags
                 items={grains}
@@ -626,7 +645,8 @@ export default class NewScreen extends Component {
                 subKey='data'
                 styles = {{
                   container: {
-                    paddingHorizontal: 10
+                    paddingBottom: 0,
+                    //paddingHorizontal: 10
                   }
                 }}
                 //ref={(comp) => { this.multiSelect = comp }}
@@ -654,7 +674,7 @@ export default class NewScreen extends Component {
                 selectToggleIconComponent={<Icon name="pagelines" size={50} color="black" />}
               /> 
             </View>
-            <View>   
+            <View style={{ flex: 1 }}>   
               <MultiSelect
                 hideTags
                 items={extracts}
@@ -662,7 +682,8 @@ export default class NewScreen extends Component {
                 subKey='data'
                 styles = {{
                   container: {
-                    paddingHorizontal: 10
+                    paddingBottom: 0,
+                    //paddingHorizontal: 10
                   }
                 }}
                 //ref={(comp) => { this.multiSelect = comp }}
@@ -690,7 +711,7 @@ export default class NewScreen extends Component {
                 selectToggleIconComponent={<Icon name="cogs" size={50} color="black" />}
               />        
             </View>
-            <View>
+            <View style={{ flex: 1 }}>
               <MultiSelect
                 hideTags
                 items={hops}
@@ -698,7 +719,8 @@ export default class NewScreen extends Component {
                 subKey='data'
                 styles = {{
                   container: {
-                    paddingHorizontal: 10
+                    paddingBottom: 0,
+                    //paddingHorizontal: 10
                   }
                 }}
                 //ref={(component) => { this.multiSelect = component }}
@@ -729,7 +751,7 @@ export default class NewScreen extends Component {
           </View>
         </View>
         
-        <View style={{margin:10}}>
+        <View style={{marginLeft:10, marginRight:10}}>
           <Text style={{fontSize: 25, fontWeight: 'bold'}}>Recipe</Text>
           <SectionList
               
@@ -753,19 +775,12 @@ export default class NewScreen extends Component {
             />
         </View>
 
-        <View style={styles.ibuContainer}>
-          <View style={styles.ibu}>
-              <Text style={styles.ibuText}>
-                  {this.state.IBU}
-              </Text>
-              <Text style={styles.ibuText}>
-                  IBU
-              </Text>
-          </View>
-        </View>
-
-        <SubmitDataButton submitData={this.submitData.bind(this)} />
+        
       </ScrollView>
+      <View style={{flex:0.075}}>
+        <SubmitDataButton submitData={this.submitData.bind(this)} />
+      </View>
+    </View>
     )
   }
 }
